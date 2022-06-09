@@ -2,7 +2,7 @@
 
 This simple version of Solitaire created as excercise in coding websistes. Solitaire is card game in which player have to arrange the cards on the stack in correct order. This game has a lot of variations, but in this project user can play in version knows as Klondike.
 
-##Rules of game
+## Rules of game
 
 - In Klondike is used standard 52-card deck;
 - There are 7 piles of card, where each pile has one more card than the last. First card of each pile is facing up, and can be moved. This is main part of board;
@@ -16,7 +16,7 @@ This simple version of Solitaire created as excercise in coding websistes. Solit
 - If there is a stack of following cards, you don't have to moved all. For example, if you have stack of cards where are 9,8,7,6,5, you can move only 7,6,5;
 - The game is ending in two cases. When you put all cards on four stacks on final areas, you win the game. But if there is no reasonable move, you lose the game.
 
-##Rules of points
+## Rules of points
 
 **Your aim is getting the lowest score**
 
@@ -29,4 +29,4 @@ This simple version of Solitaire created as excercise in coding websistes. Solit
 - placing card on final area = 10 points
 - placing King card on empty place = 15 points
 
-**Have a lot of fun!**
+# Have a lot of fun!
