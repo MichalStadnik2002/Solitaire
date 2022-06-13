@@ -40,4 +40,12 @@ body
     color: #222;
 }
 
+#initial_page h2:hover{
+    border-color: hsla(0, 0%, 70%, 1);
+    color: #BBB;
+    background-color: hsla(0, 0%, 50%, 0.5);
+    cursor: pointer;
+}
+
+
 
