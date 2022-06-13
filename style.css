@@ -1,4 +1,21 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    background-color: green;
+}
+
 #playboard
 {
     display: none;
 }
+
+#initial_page
+{
+    width: 100%;
+    height: 100%;
+    background-color: hsla(0, 0%, 75%, 0.6);
+    text-align: center;
+}
+
+
