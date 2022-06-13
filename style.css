@@ -19,10 +19,25 @@ body
 }
 
 #initial_page h1 {
-    font-family: 'Alfa Slab One', Impact, fantasy;
+    font-family: 'Lobster', Impact, fantasy;
     text-transform: uppercase;
     font-size: 4em;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
+    color: #232323;
+}
+
+#initial_page h2 {
+    border: 3px solid hsla(0, 0%, 50%, 0.5);
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    background-color: hsla(0, 0%, 70%, 0.5);
+    text-transform: uppercase;
+    font-family: 'Special Elite', cursive;
+    padding: 15px 0 5px 0;
+    font-size: 2em;    
+    color: #222;
 }
 
 
