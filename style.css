@@ -7,7 +7,7 @@ body
 
 #playboard
 {
-    display: none;
+    
 }
 
 #initial_page
@@ -17,6 +17,7 @@ body
     background-color: hsla(0, 0%, 75%, 0.6);
     text-align: center;
     backdrop-filter: blur(5px);
+    display: none;
 }
 
 #initial_page h1 {
