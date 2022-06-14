@@ -24,6 +24,16 @@ body
     cursor: pointer;
 }
 
+#playboard .card_area
+{
+    width: 4rem;
+    height: 6rem;
+    background-color: hsla(0, 0%, 100%, 0.5);
+    display: inline-block;
+    border-radius: 2px;
+    margin: 3px;
+}
+
 #initial_page
 {
     width: 100%;
