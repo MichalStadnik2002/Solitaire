@@ -25,6 +25,11 @@ body
     cursor: pointer;
 }
 
+#score {
+    float: right;
+    padding-right: 10px;
+}
+
 #playboard .card_area
 {
     width: 4rem;
@@ -33,12 +38,6 @@ body
     display: inline-block;
     border-radius: 2px;
     margin: 3px;
-}
-
-#score
-{
-    float: right;
-    padding-right: 10px;
 }
 
 #initial_page
