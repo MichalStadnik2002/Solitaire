@@ -18,6 +18,7 @@ body
     padding: 10px;
     color: #CCC;
     font-size: 1.2em;
+    word-spacing: 0.3em;
 }
 
 #help, #play_again
