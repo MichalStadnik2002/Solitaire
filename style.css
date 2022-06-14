@@ -40,6 +40,22 @@ body
     margin: 3px;
 }
 
+#final_areas, #remaining_cards
+{
+    display:inline-block;
+}
+
+#remaining_cards
+{
+    float: right;
+}
+
+#piles_of_cards
+{
+    float: right;
+    margin-top: 75px;
+}
+
 #initial_page
 {
     width: 100%;
