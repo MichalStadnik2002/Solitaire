@@ -12,6 +12,13 @@ body
     margin-right: auto;
 }
 
+#scoreboard {
+    background-color: #005000;
+    padding: 10px;
+    color: #CCC;
+    font-size: 1.2em;
+}
+
 #initial_page
 {
     width: 100%;
