@@ -28,32 +28,29 @@ body
     margin-left: auto;
     margin-right: auto;
     padding: 1.5%;
+    display: flex;
+    justify-content: center;
 }
 
 #playboard .card_area
 {
-    width: 4rem;
-    height: 6rem;
+    width: 7.5vw;
+    height: 10.75vw;
     background-color: hsla(0, 0%, 100%, 0.5);
     display: inline-block;
     border-radius: 2px;
     margin: 3px;
 }
 
-#final_areas, #remaining_cards
+#playboard .empty_area
 {
-    display:inline-block;
+    visibility: hidden;
 }
 
-#remaining_cards
+#final_areas, #remaining_cards, #piles_of_cards
 {
-    float: right;
-}
-
-#piles_of_cards
-{
-    float: right;
-    margin-top: 75px;
+    display:inline-flex;
+    margin: 35px 0;
 }
 
 #initial_page
