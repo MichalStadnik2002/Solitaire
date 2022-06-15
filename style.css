@@ -60,7 +60,11 @@ body
     background-color: hsla(0, 0%, 75%, 0.6);
     text-align: center;
     backdrop-filter: blur(5px);
-    display: none;
+    /* display: none; */
+    position: absolute;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
 }
 
 #initial_page h1 {
