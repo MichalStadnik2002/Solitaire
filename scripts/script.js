@@ -3,16 +3,18 @@ const button = document.getElementById("start_button");
 function slideUp(elementId, time)
 {
     const element = document.getElementById(elementId);
-    element.style.transition = "all 2s ease-in-out";
-    element.style.height = "0px";
-    setTimeout(() => {element.style.display = "none";},time)
+
+    element.style.transform = "translateY(-100vh)";
+    element.style.transition = "all " + time + "s ease-in-out";
+
+    setTimeout(() => { element.style.display = "none"; }, time * 1000);
 }
 
 function slideInitialPage()
 {
-    slideUp("start_button", 1000);
-    slideUp("initial_header", 1000);
-    slideUp("initial_page", 2000);
+    slideUp("start_button", 1);
+    slideUp("initial_header", 1);
+    slideUp("initial_page", 1);
 }
 
 button.addEventListener("click", slideInitialPage);
