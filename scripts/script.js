@@ -1,8 +1,8 @@
 const button = document.getElementById("start_button");
 
-function slideUp(elementId, time)
+function slideUp(element, time)
 {
-    const element = document.getElementById(elementId);
+    // const element = document.getElementById(elementId);
 
     element.style.transform = "translateY(-100vh)";
     element.style.transition = "all " + time + "s ease-in-out";
@@ -12,9 +12,15 @@ function slideUp(elementId, time)
 
 function slideInitialPage()
 {
-    slideUp("start_button", 1);
-    slideUp("initial_header", 1);
-    slideUp("initial_page", 1);
+    const initial_page = document.getElementById("initial_page");
+
+    const initial_elements = initial_page.children;
+
+    Array.from(initial_elements).forEach(element => {
+        slideUp(element, 2);
+    });
+    
+    slideUp(initial_page, 2);
 }
 
 button.addEventListener("click", slideInitialPage);
