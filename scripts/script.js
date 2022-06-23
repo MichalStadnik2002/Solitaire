@@ -1,8 +1,18 @@
-let button = document.getElementById("start_button");
+const button = document.getElementById("start_button");
 
-function slideUp()
+function slideUp(elementId, time)
 {
-    
+    const element = document.getElementById(elementId);
+    element.style.transition = "all 2s ease-in-out";
+    element.style.height = "0px";
+    setTimeout(() => {element.style.display = "none";},time)
 }
 
-button.addEventListener("click", slideUp);
+function slideInitialPage()
+{
+    slideUp("start_button", 1000);
+    slideUp("initial_header", 1000);
+    slideUp("initial_page", 2000);
+}
+
+button.addEventListener("click", slideInitialPage);
