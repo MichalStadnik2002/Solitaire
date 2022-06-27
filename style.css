@@ -35,11 +35,12 @@ body
 #playboard .card_area
 {
     width: 7.5vw;
-    height: 10.75vw;
+    height: 10.45vw;
     background-color: hsla(0, 0%, 100%, 0.5);
     display: inline-block;
     border-radius: 2px;
     margin: 3px;
+    vertical-align: top;
 }
 
 #playboard .empty_area
