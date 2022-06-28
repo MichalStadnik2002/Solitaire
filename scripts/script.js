@@ -1,3 +1,5 @@
+//Slide up Initial Page
+
 const button = document.getElementById("start_button");
 
 function slideUp(element, time)
@@ -24,3 +26,24 @@ function slideInitialPage()
 }
 
 button.addEventListener("click", slideInitialPage);
+
+//Generate 52-card deck
+
+const Card = function (numberToRank, numberToSuit) {
+    this.rank = numberToRank;
+    this.suit = numberToSuit;
+    this.isOnView = false;
+    this.isOnPile = false;
+}
+
+let unshuffledCards = [];
+
+for (let i = 1; i <= 13; i++)
+{
+    for (let j = 0; j < 4; j++)
+    {
+        unshuffledCards.push(new Card(i, j));
+    }
+}
+
+console.log(unshuffledCards);
