@@ -47,3 +47,16 @@ for (let i = 1; i <= 13; i++)
 }
 
 console.log(unshuffledCards);
+
+//Shuffle a deck
+
+let shuffledCards = [];
+
+for (let i = 0; i < unshuffledCards.length; i++)
+{
+    let randomIndex = Math.floor(Math.random() * unshuffledCards.length);
+    shuffledCards[i] = unshuffledCards[randomIndex];
+}
+
+console.log(shuffledCards);
+
