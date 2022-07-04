@@ -58,5 +58,23 @@ for (let i = 0; i < unshuffledCards.length; i++)
     shuffledCards[i] = unshuffledCards[randomIndex];
 }
 
-console.log(shuffledCards);
+console.log(JSON.parse(JSON.stringify(shuffledCards)));
 
+//Arrange cards in 7 starter piles and array of remaining cards (remaining cards = arrangedCard[7])
+
+let arrangedCards = Array.from(Array(8), () => new Array(0));
+
+for (i = 0; i < 7; i++)
+{
+    for (j = 0; j <= i; j++)
+    {
+        arrangedCards[i][j] = shuffledCards.pop();
+        }
+}
+
+while (shuffledCards.length > 0) {
+  arrangedCards[7].push(shuffledCards[0]);
+  shuffledCards.shift();
+}
+
+console.log(arrangedCards);
