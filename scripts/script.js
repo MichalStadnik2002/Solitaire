@@ -34,6 +34,29 @@ const Card = function (numberToRank, numberToSuit) {
     this.suit = numberToSuit;
     this.isOnView = false;
     this.isOnPile = false;
+    this.isCardBellowReversed = true;
+    this.indexInPile = 0; //Cards with index = 0, are on pile bottom, cards with index = 7 aren't on any pile
+
+    this.genereteCardElement = function (parentElement, isReversed) { 
+        const newCard = document.createElement("card-t");
+        newCard.style.position = "relative";
+
+        if (isReversed)
+        {
+            newCard.setAttribute("rank", "0");
+            newCard.style.bottom = (10.45 - 1) * this.indexInPile + "vw";            
+        }
+        else {
+            newCard.setAttribute("rank", this.rank);
+            newCard.setAttribute("suit", this.suit);
+            newCard.style.bottom = `${(10.45 - 1.5) * this.indexInPile}vw`;
+            if (this.isCardBellowReversed) {
+              newCard.style.bottom = `${(10.45 - 1) * this.indexInPile}vw`;
+            }
+        }
+
+        parentElement.append(newCard);
+    };
 }
 
 let unshuffledCards = [];
@@ -78,3 +101,12 @@ while (shuffledCards.length > 0) {
 }
 
 console.log(arrangedCards);
+
+// arrangedCards[0][0].genereteCardElement(document.getElementById("pile_1"),true);
+// arrangedCards[1][1].indexInPile = 1;
+// arrangedCards[1][1].genereteCardElement(document.getElementById("pile_1"),true);
+// arrangedCards[2][1].indexInPile = 2;
+// arrangedCards[2][1].genereteCardElement(document.getElementById("pile_1"));
+// arrangedCards[3][1].indexInPile = 3;
+// arrangedCards[3][1].isCardBellowReversed = false;
+// arrangedCards[3][1].genereteCardElement(document.getElementById("pile_1"));
