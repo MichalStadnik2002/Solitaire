@@ -35,26 +35,33 @@ const Card = function (numberToRank, numberToSuit) {
     this.isOnView = false;
     this.isOnPile = false;
     this.isCardBellowReversed = true;
-    this.indexInPile = 0; //Cards with index = 0, are on pile bottom, cards with index = 7 aren't on any pile
+    this.indexInPile = 0; //Cards with index = 0, are on pile bottom, cards with index above or equal to 7 aren't on any pile
 
     this.genereteCardElement = function (parentElement, isReversed) { 
         const newCard = document.createElement("card-t");
         newCard.style.position = "relative";
 
-        if (isReversed)
-        {
+        //Maybe card-t elements should have float property?
+        //Then this if should be realy changed
+        if (this.indexInPile >= 7) {
             newCard.setAttribute("rank", "0");
-            newCard.style.bottom = (10.45 - 1) * this.indexInPile + "vw";            
+            newCard.style.bottom = `${10.82 * (this.indexInPile-7)}vw`;
+            // console.log(newCard.style.bottom);
         }
         else {
-            newCard.setAttribute("rank", this.rank);
-            newCard.setAttribute("suit", this.suit);
-            newCard.style.bottom = `${(10.45 - 1.5) * this.indexInPile}vw`;
-            if (this.isCardBellowReversed) {
-              newCard.style.bottom = `${(10.45 - 1) * this.indexInPile}vw`;
+            if (isReversed) {
+                newCard.setAttribute("rank", "0");
+                newCard.style.bottom = `${(10.45 - 1) * this.indexInPile}vw`;
+            }
+            else {
+                newCard.setAttribute("rank", this.rank);
+                newCard.setAttribute("suit", this.suit);
+                newCard.style.bottom = `${(10.45 - 1.5) * this.indexInPile}vw`;
+                if (this.isCardBellowReversed) {
+                    newCard.style.bottom = `${(10.45 - 1) * this.indexInPile}vw`;
+                }
             }
         }
-
         parentElement.append(newCard);
     };
 }
@@ -69,7 +76,7 @@ for (let i = 1; i <= 13; i++)
     }
 }
 
-console.log(unshuffledCards);
+// console.log(unshuffledCards);
 
 //Shuffle a deck
 
@@ -81,7 +88,7 @@ for (let i = 0; i < unshuffledCards.length; i++)
     shuffledCards[i] = unshuffledCards[randomIndex];
 }
 
-console.log(JSON.parse(JSON.stringify(shuffledCards)));
+// console.log(JSON.parse(JSON.stringify(shuffledCards)));
 
 //Arrange cards in 7 starter piles and array of remaining cards (remaining cards = arrangedCard[7])
 
@@ -110,3 +117,26 @@ console.log(arrangedCards);
 // arrangedCards[3][1].indexInPile = 3;
 // arrangedCards[3][1].isCardBellowReversed = false;
 // arrangedCards[3][1].genereteCardElement(document.getElementById("pile_1"));
+
+//Show all cards on playboard
+
+for (i = 0; i < (arrangedCards.length-1); i++){
+    const actualPile = document.getElementById(`pile_${i + 1}`);
+    for (j = 0; j < arrangedCards[i].length; j++){
+        arrangedCards[i][j].indexInPile = j;
+        let isLastCard = false;
+        if (j == (arrangedCards[i].length - 1)) {
+            isLastCard = true;
+        }
+        arrangedCards[i][j].genereteCardElement(actualPile, !isLastCard);
+    }
+}
+
+const reversedRemainigCards = document.getElementById("reversed_cards");
+const lastIndexArangedCards = arrangedCards.length - 1
+
+for (i = 0; i < arrangedCards[lastIndexArangedCards].length; i++){
+    const ActualCard = arrangedCards[lastIndexArangedCards][i];
+    ActualCard.indexInPile = i+7;
+    ActualCard.genereteCardElement(reversedRemainigCards, true);
+}
