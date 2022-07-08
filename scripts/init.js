@@ -27,7 +27,7 @@ function slideInitialPage()
 
 button.addEventListener("click", slideInitialPage);
 
-//Generate 52-card deck
+//Card object
 
 const Card = function (numberToRank, numberToSuit) {
     this.rank = numberToRank;
@@ -66,6 +66,9 @@ const Card = function (numberToRank, numberToSuit) {
     };
 }
 
+//deck_generator
+//Generate 52-card deck
+
 let unshuffledCards = [];
 
 for (let i = 1; i <= 13; i++)
@@ -78,6 +81,7 @@ for (let i = 1; i <= 13; i++)
 
 console.log(JSON.parse(JSON.stringify(unshuffledCards)));
 
+//deck_shuffling
 //Shuffle a deck
 
 let shuffledCards = [];
@@ -93,6 +97,7 @@ shuffledCards = shuffledCards.flat();
 console.log(JSON.parse(JSON.stringify(shuffledCards)));
 console.log(unshuffledCards);
 
+//cards arranger
 //Arrange cards in 7 starter piles and array of remaining cards (remaining cards = arrangedCard[7])
 
 let arrangedCards = Array.from(Array(8), () => new Array(0));
@@ -121,6 +126,7 @@ console.log(arrangedCards);
 // arrangedCards[3][1].isCardBellowReversed = false;
 // arrangedCards[3][1].genereteCardElement(document.getElementById("pile_1"));
 
+//cards revealer
 //Show all cards on playboard
 
 for (i = 0; i < (arrangedCards.length-1); i++){
