@@ -76,19 +76,22 @@ for (let i = 1; i <= 13; i++)
     }
 }
 
-// console.log(unshuffledCards);
+console.log(JSON.parse(JSON.stringify(unshuffledCards)));
 
 //Shuffle a deck
 
 let shuffledCards = [];
+const LengthOfUnshufledCards = unshuffledCards.length
 
-for (let i = 0; i < unshuffledCards.length; i++)
+for (let i = 0; i < LengthOfUnshufledCards ; i++)
 {
     let randomIndex = Math.floor(Math.random() * unshuffledCards.length);
-    shuffledCards[i] = unshuffledCards[randomIndex];
+    shuffledCards[i] = unshuffledCards.splice(randomIndex,1);
 }
+shuffledCards = shuffledCards.flat();
 
-// console.log(JSON.parse(JSON.stringify(shuffledCards)));
+console.log(JSON.parse(JSON.stringify(shuffledCards)));
+console.log(unshuffledCards);
 
 //Arrange cards in 7 starter piles and array of remaining cards (remaining cards = arrangedCard[7])
 
