@@ -54,6 +54,11 @@ body
     margin: 35px 0;
 }
 
+card-t
+{
+    cursor: pointer;
+}
+
 #initial_page
 {
     width: 100%;
@@ -95,6 +100,13 @@ body
     color: #BBB;
     background-color: hsla(0, 0%, 50%, 0.5);
     cursor: pointer;
+}
+
+/*JS classes*/
+
+.card-is-moving
+{
+    z-index: 100;
 }
 
 
