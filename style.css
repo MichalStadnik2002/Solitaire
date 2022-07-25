@@ -111,6 +111,7 @@ card-t
 .card-is-moving
 {
     z-index: 100;
+    pointer-events: none;
 }
 
 
