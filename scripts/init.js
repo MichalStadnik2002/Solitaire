@@ -98,9 +98,13 @@ console.log(JSON.parse(JSON.stringify(shuffledCards)));
 console.log(unshuffledCards);
 
 //cards arranger
-//Arrange cards in 7 starter piles and array of remaining cards (remaining cards = arrangedCard[7])
+//Arrange cards in 7 starter piles and array of remaining cards
+//Arrays from arrangedCards[0] to [6] - piles with id pile_1 to pile_7
+//arrangedCards[7] - unreversed cards
+//arrangedCards[8] - reversed cards
+//Arrays from arrangedCards[9] to [12] - final areas with id final_area_1 to final_area_4
 
-let arrangedCards = Array.from(Array(8), () => new Array(0));
+let arrangedCards = Array.from(Array(13), () => new Array(0));
 
 for (i = 0; i < 7; i++)
 {
@@ -111,7 +115,7 @@ for (i = 0; i < 7; i++)
 }
 
 while (shuffledCards.length > 0) {
-  arrangedCards[7].push(shuffledCards[0]);
+  arrangedCards[8].push(shuffledCards[0]);
   shuffledCards.shift();
 }
 
@@ -129,7 +133,7 @@ console.log(arrangedCards);
 //cards revealer
 //Show all cards on playboard
 
-for (i = 0; i < (arrangedCards.length-1); i++){
+for (i = 0; i < 7; i++){
     const actualPile = document.getElementById(`pile_${i + 1}`);
     for (j = 0; j < arrangedCards[i].length; j++){
         arrangedCards[i][j].indexInPile = j;
@@ -142,10 +146,9 @@ for (i = 0; i < (arrangedCards.length-1); i++){
 }
 
 const reversedRemainigCards = document.getElementById("reversed_cards");
-const lastIndexArangedCards = arrangedCards.length - 1
 
-for (i = 0; i < arrangedCards[lastIndexArangedCards].length; i++){
-    const ActualCard = arrangedCards[lastIndexArangedCards][i];
+for (i = 0; i < arrangedCards[8].length; i++){
+    const ActualCard = arrangedCards[8][i];
     ActualCard.indexInPile = i+7;
     ActualCard.genereteCardElement(reversedRemainigCards, true);
 }
@@ -183,9 +186,10 @@ function cardToObject(cardT) {
                 case "reversed_cards":
                     getCardObject(8);
                     break;
-              default:
-                break;
+                default:
+                    break;
             }
+            break;
         case 'final_area':
             const finalAreaNumber = parentId.replace('final_area_', '');
             getCardObject(finalAreaNumber + 8);
