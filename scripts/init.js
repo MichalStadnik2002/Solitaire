@@ -149,3 +149,48 @@ for (i = 0; i < arrangedCards[lastIndexArangedCards].length; i++){
     ActualCard.indexInPile = i+7;
     ActualCard.genereteCardElement(reversedRemainigCards, true);
 }
+
+//convert card-t to object
+
+function cardToObject(cardT) {
+    if (cardT.tagName != "CARD-T") {
+        return undefined;
+    }
+
+    const parent = cardT.parentNode;
+    const parentClass = parent.classList.item(0);
+    const parentId = parent.id
+    const parentIndex = Array.prototype.indexOf.call(
+              cardT.parentNode.childNodes,
+              cardT
+            );
+    let cardObject;
+
+    function getCardObject(arrangedCardsIndex) {
+        cardObject = arrangedCards[arrangedCardsIndex][parentIndex];
+    }
+
+    switch (parentClass) {
+        case 'pile':
+            const pileNumber = parentId.replace('pile_', '');
+            getCardObject(pileNumber - 1);
+            break;
+        case 'remaining_pile':
+            switch (parentId) {
+                case "unreversed_cards":
+                    getCardObject(7);
+                    break;
+                case "reversed_cards":
+                    getCardObject(8);
+                    break;
+              default:
+                break;
+            }
+        case 'final_area':
+            const finalAreaNumber = parentId.replace('final_area_', '');
+            getCardObject(finalAreaNumber + 8);
+        default:
+            break;
+    }
+    return cardObject;
+}
