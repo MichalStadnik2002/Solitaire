@@ -30,40 +30,45 @@ button.addEventListener("click", slideInitialPage);
 //Card object
 
 const Card = function (numberToRank, numberToSuit) {
-    this.rank = numberToRank;
-    this.suit = numberToSuit;
-    this.isOnView = false;
-    this.isOnPile = false;
-    this.isCardBellowReversed = true;
-    this.indexInPile = 0; //Cards with index = 0, are on pile bottom, cards with index above or equal to 7 aren't on any pile
+  this.rank = numberToRank;
+  this.suit = numberToSuit;
+  this.isOnView = false;
+  this.isOnPile = false;
+  this.isCardBellowReversed = true;
+  this.indexInPile = 0; //Cards with index = 0, are on pile bottom
+  this.pileIndex = 8; //value between 0 to 6 - means pile from 1 to 7, 7 mean unreversed remaing pile, 8 mean reversed remaining pile, 9-12 mean final area from 1 to 4
 
-    this.genereteCardElement = function (parentElement, isReversed) { 
-        const newCard = document.createElement("card-t");
-        newCard.style.position = "relative";
+  this.genereteCardElement = function (parentElement, isReversed) {
+      const newCard = document.createElement("card-t");
+      const shift = arrangedCards[this.pileIndex].length - 1 - this.indexInPile;
+      newCard.style.position = "relative";
+              newCard.setAttribute("rank", this.rank);
+              newCard.setAttribute("suit", this.suit);
 
-        //Maybe card-t elements should have float property?
-        //Then this if should be realy changed
-        if (this.indexInPile >= 7) {
-            newCard.setAttribute("rank", "0");
-            newCard.style.bottom = `${10.82 * (this.indexInPile-7)}vw`;
-            // console.log(newCard.style.bottom);
+    //Maybe card-t elements should have float property?
+    //Then this if should be realy changed
+    if (this.pileIndex == 8) {
+    //   newCard.setAttribute("rank", "0");
+        newCard.style.bottom = `${10.82 * shift}vw`;
+      // console.log(newCard.style.bottom);
+    } else {
+      if (isReversed) {
+        newCard.setAttribute("rank", "0");
+        newCard.style.bottom = `${
+          (10.45 - 1) * shift}vw`;
+      } else {
+        newCard.setAttribute("rank", this.rank);
+        newCard.setAttribute("suit", this.suit);
+        newCard.style.bottom = `${
+          (10.45 - 1.5) * shift}vw`;
+        if (this.isCardBellowReversed) {
+          newCard.style.bottom = `${
+            (10.45 - 1) * shift}vw`;
         }
-        else {
-            if (isReversed) {
-                newCard.setAttribute("rank", "0");
-                newCard.style.bottom = `${(10.45 - 1) * this.indexInPile}vw`;
-            }
-            else {
-                newCard.setAttribute("rank", this.rank);
-                newCard.setAttribute("suit", this.suit);
-                newCard.style.bottom = `${(10.45 - 1.5) * this.indexInPile}vw`;
-                if (this.isCardBellowReversed) {
-                    newCard.style.bottom = `${(10.45 - 1) * this.indexInPile}vw`;
-                }
-            }
-        }
-        parentElement.append(newCard);
-    };
+      }
+    }
+    parentElement.append(newCard);
+  };
 }
 
 //deck_generator
@@ -79,7 +84,7 @@ for (let i = 1; i <= 13; i++)
     }
 }
 
-console.log(JSON.parse(JSON.stringify(unshuffledCards)));
+// console.log(JSON.parse(JSON.stringify(unshuffledCards)));
 
 //deck_shuffling
 //Shuffle a deck
@@ -94,8 +99,8 @@ for (let i = 0; i < LengthOfUnshufledCards ; i++)
 }
 shuffledCards = shuffledCards.flat();
 
-console.log(JSON.parse(JSON.stringify(shuffledCards)));
-console.log(unshuffledCards);
+// console.log(JSON.parse(JSON.stringify(shuffledCards)));
+// console.log(unshuffledCards);
 
 //cards arranger
 //Arrange cards in 7 starter piles and array of remaining cards
@@ -111,12 +116,14 @@ for (i = 0; i < 7; i++)
     for (j = 0; j <= i; j++)
     {
         arrangedCards[i][j] = shuffledCards.pop();
+        arrangedCards[i][j].pileIndex = i;
+        arrangedCards[i][j].indexInPile = i - j;
         }
 }
 
 while (shuffledCards.length > 0) {
   arrangedCards[8].push(shuffledCards[0]);
-  shuffledCards.shift();
+    shuffledCards.shift();
 }
 
 console.log(arrangedCards);
@@ -136,7 +143,6 @@ console.log(arrangedCards);
 for (i = 0; i < 7; i++){
     const actualPile = document.getElementById(`pile_${i + 1}`);
     for (j = 0; j < arrangedCards[i].length; j++){
-        arrangedCards[i][j].indexInPile = j;
         let isLastCard = false;
         if (j == (arrangedCards[i].length - 1)) {
             isLastCard = true;
@@ -147,13 +153,13 @@ for (i = 0; i < 7; i++){
 
 const reversedRemainigCards = document.getElementById("reversed_cards");
 
-for (i = 0; i < arrangedCards[8].length; i++){
+for (i = arrangedCards[8].length-1; i >= 0; i--){
     const ActualCard = arrangedCards[8][i];
-    ActualCard.indexInPile = i+7;
-    ActualCard.genereteCardElement(reversedRemainigCards, true);
+    ActualCard.indexInPile = i;
+    ActualCard.genereteCardElement(reversedRemainigCards, false);
 }
 
-//convert card-t to object
+//convert given card-t to object
 
 function cardToObject(cardT) {
     if (cardT.tagName != "CARD-T") {
