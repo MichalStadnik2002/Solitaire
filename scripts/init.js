@@ -51,6 +51,8 @@ const Card = function (numberToRank, numberToSuit) {
       newCard.setAttribute("rank", "0");
       newCard.style.bottom = `${10.82 * shift}vw`;
       // console.log(newCard.style.bottom);
+            newCard.setAttribute("rank", this.rank);
+            newCard.setAttribute("suit", this.suit);
     } else {
       if (isReversed) {
         newCard.setAttribute("rank", "0");
@@ -204,8 +206,8 @@ function objectToCard(cardObject) {
 
   function getCardT(parentId) {
     const parent = document.getElementById(parentId);
-    const children = parent.childNodes;
-    cardT = children[cardObject.indexInPile];
+      const children = parent.childNodes;
+    cardT = children[children.length-1-cardObject.indexInPile];
   }
 
   if (cardObject.pileIndex >= 0 && cardObject.pileIndex < 7) {
@@ -225,4 +227,3 @@ function objectToCard(cardObject) {
   return cardT;
 }
 
-console.log(objectToCard(arrangedCards[8][0]));
