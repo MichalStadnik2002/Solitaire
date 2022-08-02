@@ -48,7 +48,7 @@ const Card = function (numberToRank, numberToSuit) {
     //Maybe card-t elements should have float property?
     //Then this if should be realy changed
     if (this.pileIndex == 8) {
-      //   newCard.setAttribute("rank", "0");
+      newCard.setAttribute("rank", "0");
       newCard.style.bottom = `${10.82 * shift}vw`;
       // console.log(newCard.style.bottom);
     } else {
@@ -105,11 +105,17 @@ shuffledCards = shuffledCards.flat();
 
 let arrangedCards = Array.from(Array(13), () => new Array(0));
 
-for (i = 0; i < 7; i++) {
-  for (j = 0; j <= i; j++) {
+for (i = 6; i >= 0; i--) {
+  const actualPile = document.getElementById(`pile_${i + 1}`);
+  for (j = i; j >= 0; j--) {
     arrangedCards[i][j] = shuffledCards.pop();
     arrangedCards[i][j].pileIndex = i;
-    arrangedCards[i][j].indexInPile = i - j;
+    arrangedCards[i][j].indexInPile = j;
+    let isLastCard = false;
+    if (!j) {
+      isLastCard = true;
+    }
+    arrangedCards[i][j].genereteCardElement(actualPile, !isLastCard);
   }
 }
 
@@ -132,16 +138,6 @@ console.log(arrangedCards);
 //cards revealer
 //Show all cards on playboard
 
-for (i = 0; i < 7; i++) {
-  const actualPile = document.getElementById(`pile_${i + 1}`);
-  for (j = 0; j < arrangedCards[i].length; j++) {
-    let isLastCard = false;
-    if (j == arrangedCards[i].length - 1) {
-      isLastCard = true;
-    }
-    arrangedCards[i][j].genereteCardElement(actualPile, !isLastCard);
-  }
-}
 
 const reversedRemainigCards = document.getElementById("reversed_cards");
 
