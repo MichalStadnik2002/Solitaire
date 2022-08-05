@@ -2,8 +2,12 @@
   //original comments was delated for code clarity
   function filter(e) {
     let target = e.target.parentNode;
+    
+    if ((target.parentNode.id == 'reversed_cards')) {
+      reverseRemainingCard(target);
+    } else if (e.target.id == 'reversed_cards') {
 
-    if (!(target.parentNode.id == 'reversed_cards')) {
+    } else {
       firstTop = target.style.top;
       target.moving = true;
       target.classList.add("card-is-moving");
@@ -42,25 +46,41 @@
       }
 
     }
-    else {
-      //code here will reverse cards and move to unreversed cards pile
-    }
 }
   
 document.onmousedown = filter;
 document.ontouchstart = filter;
 //consistently, here should be added event listener for touch up
-document.addEventListener('mouseup', () => {
+document.addEventListener('mouseup', (e) => {
   const cardBellow = whatIsBellow();
   const movingElement = document.querySelector('.card-is-moving');
-  movingElement.classList.remove('card-is-moving');
-  movingElement.style.left = 0;
-  movingElement.style.top = firstTop;
-  movingElement.moving = false;
-  console.log(cardBellow);
+  if(movingElement){
+    movingElement.classList.remove('card-is-moving');
+    movingElement.style.left = 0;
+    movingElement.style.top = firstTop;
+    movingElement.moving = false;
+    console.log(cardBellow);
+  }
 })
 
 function whatIsBellow() {
-    const targetDiv = document.querySelectorAll(":hover");
-    return targetDiv;
+  let targetDiv = document.querySelectorAll(":hover");
+  targetDiv = Array.from(targetDiv);
+  targetDiv.splice(0, 4);
+  return targetDiv;
   }
+
+function reverseRemainingCard(reversedCard) {
+  const reversedCards = document.getElementById('reversed_cards');
+  const cardObject = cardToObject(reversedCard);
+  reversedCard.setAttribute('rank', cardObject.rank);
+  reversedCard.setAttribute('suit', cardObject.suit);
+  
+  arrangedCards[7].push(arrangedCards[8].pop());
+  
+  const unreversedCards = document.getElementById('unreversed_cards');
+  reversedCards.removeChild(reversedCard);
+  unreversedCards.appendChild(reversedCard);
+  reversedCard.style.bottom = `${10.82 * getIndexInParentElement(reversedCard)}vw`;
+  // console.log(reversedCards.childNodes.length)
+}
