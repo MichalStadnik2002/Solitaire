@@ -6,7 +6,7 @@
     if ((target.parentNode.id == 'reversed_cards')) {
       reverseRemainingCard(target);
     } else if (e.target.id == 'reversed_cards') {
-
+      reverseAllCards();
     } else {
       firstTop = target.style.top;
       target.moving = true;
@@ -82,5 +82,16 @@ function reverseRemainingCard(reversedCard) {
   reversedCards.removeChild(reversedCard);
   unreversedCards.appendChild(reversedCard);
   reversedCard.style.bottom = `${10.82 * getIndexInParentElement(reversedCard)}vw`;
-  // console.log(reversedCards.childNodes.length)
+}
+
+function reverseAllCards() {
+  const reversedCards = document.getElementById("reversed_cards");
+  const unreversedCards = document.getElementById("unreversed_cards");
+  const children = unreversedCards.children;
+  for (let i = children.length - 1, j = 0; i >= 0; i--, j++) {
+    arrangedCards[8].push(arrangedCards[7].pop());
+    children[i].setAttribute('rank', '0');
+    children[i].style.bottom = `${10.82 * j}vw`;
+    reversedCards.appendChild(children[i]);
+  }
 }
