@@ -7,7 +7,10 @@
       reverseRemainingCard(target);
     } else if (e.target.id == 'reversed_cards') {
       reverseAllCards();
-    } else {
+    } else if (target.rank == 0) {
+      return;
+    }
+    else {
       firstTop = target.style.top;
       target.moving = true;
       target.classList.add("card-is-moving");
