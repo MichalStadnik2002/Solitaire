@@ -41,26 +41,25 @@ const Card = function (numberToRank, numberToSuit) {
   this.genereteCardElement = function (parentElement, isReversed) {
     const newCard = document.createElement("card-t");
     const shift = arrangedCards[this.pileIndex].length - 1 - this.indexInPile;
-    newCard.style.position = "relative";
+    // const shift = arrangedCards[this.pileIndex].length - 1 - this.indexInPile;
+    newCard.style.position = "absolute";
     newCard.setAttribute("rank", this.rank);
     newCard.setAttribute("suit", this.suit);
 
-    //Maybe card-t elements should have float property?
-    //Then this if should be realy changed
     if (this.pileIndex == 8) {
       newCard.setAttribute("rank", "0");
-      newCard.style.bottom = `${10.82 * shift}vw`;
+      //newCard.style.bottom = `${10.82 * shift}vw`;
       // console.log(newCard.style.bottom);
     } else {
       if (isReversed) {
         newCard.setAttribute("rank", "0");
-        newCard.style.bottom = `${(10.45 - 1) * shift}vw`;
+        newCard.style.top = `${(1) * shift}vw`;
       } else {
         newCard.setAttribute("rank", this.rank);
         newCard.setAttribute("suit", this.suit);
-        newCard.style.bottom = `${(10.45 - 1.5) * shift}vw`;
+        newCard.style.top = `${(1.5) * shift}vw`;
         if (this.isCardBellowReversed) {
-          newCard.style.bottom = `${(10.45 - 1) * shift}vw`;
+         newCard.style.top = `${(1) * shift}vw`;
         }
       }
     }
