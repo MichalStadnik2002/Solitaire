@@ -40,8 +40,8 @@ const Card = function (numberToRank, numberToSuit) {
 
   this.genereteCardElement = function (parentElement, isReversed) {
     const newCard = document.createElement("card-t");
-    const shift = arrangedCards[this.pileIndex].length - 1 - this.indexInPile;
     // const shift = arrangedCards[this.pileIndex].length - 1 - this.indexInPile;
+    const shift = this.indexInPile;
     newCard.style.position = "absolute";
     newCard.setAttribute("rank", this.rank);
     newCard.setAttribute("suit", this.suit);
@@ -106,12 +106,12 @@ let arrangedCards = Array.from(Array(13), () => new Array(0));
 
 for (i = 6; i >= 0; i--) {
   const actualPile = document.getElementById(`pile_${i + 1}`);
-  for (j = i; j >= 0; j--) {
+  for (j = 0; j <= i; j++) {
     arrangedCards[i][j] = shuffledCards.pop();
     arrangedCards[i][j].pileIndex = i;
     arrangedCards[i][j].indexInPile = j;
     let isLastCard = false;
-    if (!j) {
+    if (j==i) {
       isLastCard = true;
     }
     arrangedCards[i][j].genereteCardElement(actualPile, !isLastCard);
