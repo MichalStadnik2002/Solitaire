@@ -7,10 +7,7 @@
       reverseRemainingCard(target);
     } else if (e.target.id == 'reversed_cards') {
       reverseAllCards();
-    } else if (target.rank == 0) {
-      return;
-    }
-    else {
+    } else if (target.tagName == 'CARD-T' && target.rank != 0){
       firstTop = target.style.top;
       target.moving = true;
       target.classList.add("card-is-moving");
@@ -48,6 +45,8 @@
         target.style.top = target.oldTop + target.distY + "px";
       }
 
+    } else {
+      return;
     }
 }
   
