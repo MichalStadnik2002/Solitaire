@@ -156,7 +156,7 @@ function cardToObject(cardT) {
   const parent = cardT.parentNode;
   const subarray = pileToSubarray(parent);
   const parentIndex = getIndexInParentElement(cardT);
-  
+
   return subarray[parentIndex]
 }
 
@@ -243,3 +243,17 @@ function getIndexInParentElement(element) {
   return parentIndex;
 }
 
+function reverseCard(cardT) {
+  if (cardT.tagName != "CARD-T") {
+    return undefined;
+  }
+
+  const cardObject = cardToObject(cardT);
+  
+  if (cardT.rank == 0) {
+    cardT.setAttribute("rank", cardObject.rank);
+    cardT.setAttribute("suit", cardObject.suit);
+  } else {
+    cardT.setAttribute("rank", '0');
+  }
+}
