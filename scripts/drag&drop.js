@@ -55,14 +55,34 @@ document.onmousedown = filter;
 document.ontouchstart = filter;
 //consistently, here should be added event listener for touch up
 document.addEventListener('mouseup', (e) => {
-  const cardBellow = whatIsBellow();
-  const movingElement = document.querySelector('.card-is-moving');
-  if(movingElement){
-    movingElement.classList.remove('card-is-moving');
-    movingElement.style.left = 0;
-    movingElement.style.top = firstTop;
-    movingElement.moving = false;
-    console.log(cardBellow);
+  const elementsBellow = whatIsBellow();
+  const movingCard = document.querySelector('.card-is-moving');
+  if (movingCard) {
+    const initialPile = movingCard.parentNode;
+    movingCard.classList.remove('card-is-moving');
+    if (isCardBellowGood(elementsBellow, movingCard)) {
+      if (elementsBellow[2]) { //temporary until function isCardBellowGood not exsist
+        const movingCardObject = cardToObject(movingCard);
+        const targetArray = pileToSubarray(elementsBellow[2])
+        const initialArray = pileToSubarray(initialPile)
+
+        initialArray.splice(initialArray.indexOf(movingCardObject), 1);
+        targetArray.push(movingCardObject);
+
+        elementsBellow[2].append(movingCard);
+        movingCard.style.left = 0;
+        movingCard.style.top = `${1.2 * (elementsBellow[2].children.length - 1)}vw`;
+
+        if (initialPile.lastChild) {
+          reverseCard(initialPile.lastChild);
+        }
+      }
+    }
+    else {
+      movingCard.style.left = 0;
+      movingCard.style.top = firstTop;
+    }
+    movingCard.moving = false;
   }
 })
 
@@ -98,3 +118,5 @@ function reverseAllCards() {
     reversedCards.appendChild(children[i]);
   }
 }
+
+function isCardBellowGood(elementsBellow, movingCard) { return true; };
