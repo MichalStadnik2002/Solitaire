@@ -189,6 +189,49 @@ function cardToObject(cardT) {
   return cardObject;
 }
 
+//convert given pile div to responding subarray in arranged_card
+
+function pileToSubarray(pile) {
+  if (!(pile.tagName == 'DIV' && pile.classList.contains('card_area'))) {
+    return undefined;
+  } 
+  
+
+  const pileClass = pile.classList.item(0);
+  const pileId = pile.id;
+  let subarray;
+
+    function getSubarray(subarrayIndex) {
+      subarray = arrangedCards[subarrayIndex];
+    }
+
+switch (pileClass) {
+  case "pile":
+    const pileNumber = pileId.replace("pile_", "");
+    getSubarray(pileNumber - 1);
+    break;
+  case "remaining_pile":
+    switch (pileId) {
+      case "unreversed_cards":
+        getSubarray(7);
+        break;
+      case "reversed_cards":
+        getSubarray(8);
+        break;
+      default:
+        break;
+    }
+    break;
+  case "final_area":
+    const finalAreaNumber = parseInt(pileId.replace("final_area_", ""));
+    getSubarray(finalAreaNumber + 8);
+  default:
+    break;
+  }
+  
+  return subarray;
+}
+
 //convert given object to card-t
 
 function objectToCard(cardObject) {
