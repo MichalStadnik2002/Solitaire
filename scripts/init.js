@@ -154,39 +154,10 @@ function cardToObject(cardT) {
   }
 
   const parent = cardT.parentNode;
-  const parentClass = parent.classList.item(0);
-  const parentId = parent.id;
+  const subarray = pileToSubarray(parent);
   const parentIndex = getIndexInParentElement(cardT);
-  let cardObject;
-
-  function getCardObject(arrangedCardsIndex) {
-    cardObject = arrangedCards[arrangedCardsIndex][parentIndex];
-  }
-
-  switch (parentClass) {
-    case "pile":
-      const pileNumber = parentId.replace("pile_", "");
-      getCardObject(pileNumber - 1);
-      break;
-    case "remaining_pile":
-      switch (parentId) {
-        case "unreversed_cards":
-          getCardObject(7);
-          break;
-        case "reversed_cards":
-          getCardObject(8);
-          break;
-        default:
-          break;
-      }
-      break;
-    case "final_area":
-      const finalAreaNumber = parentId.replace("final_area_", "");
-      getCardObject(finalAreaNumber + 8);
-    default:
-      break;
-  }
-  return cardObject;
+  
+  return subarray[parentIndex]
 }
 
 //convert given pile div to responding subarray in arranged_card
