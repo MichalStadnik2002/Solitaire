@@ -1,7 +1,10 @@
+let initialPile;
+  
   //code bellow is based on code from https://stackoverflow.com/a/63425707/19125705
   //original comments was delated for code clarity
-  function filter(e) {
-    let target = e.target.parentNode;
+function filter(e) {
+  let target = e.target.parentNode;
+  initialPile = target.parentNode;
     
     if ((target.parentNode.id == 'reversed_cards')) {
       reverseRemainingCard(target);
@@ -57,13 +60,14 @@ document.addEventListener('mouseup', (e) => {
   const elementsBellow = whatIsBellow();
   const movingCard = document.querySelector('.card-is-moving');
   if (movingCard) {
-    const initialPile = movingCard.parentNode;
+    // const initialPile = movingCard.parentNode;
     movingCard.classList.remove('card-is-moving');
     if (isCardBellowGood(elementsBellow, movingCard)) {
       if (elementsBellow[2]) { //temporary until function isCardBellowGood not exsist
         const movingCardObject = cardToObject(movingCard);
         const targetArray = pileToSubarray(elementsBellow[2])
         const initialArray = pileToSubarray(initialPile)
+        // const initialArray = pileToSubarray(initialPile)
 
         initialArray.splice(initialArray.indexOf(movingCardObject), 1);
         targetArray.push(movingCardObject);
@@ -72,7 +76,7 @@ document.addEventListener('mouseup', (e) => {
         movingCard.style.left = 0;
         movingCard.style.top = `${1.2 * (elementsBellow[2].children.length - 1)}vw`;
 
-        if (initialPile.lastChild) {
+        if (initialPile.lastChild && initialPile != elementsBellow[2]) {
           reverseCard(initialPile.lastChild);
         }
       }
