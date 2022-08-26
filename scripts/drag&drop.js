@@ -1,16 +1,20 @@
-let initialPile;
+let initialPile, target;
   
   //code bellow is based on code from https://stackoverflow.com/a/63425707/19125705
   //original comments was delated for code clarity
 function filter(e) {
-  let target = e.target.parentNode;
+  target = e.target.parentNode;
   initialPile = target.parentNode;
     
     if ((target.parentNode.id == 'reversed_cards')) {
       reverseRemainingCard(target);
     } else if (e.target.id == 'reversed_cards') {
       reverseAllCards();
-    } else if (target.tagName == 'CARD-T' && target.rank != 0){
+    } else if (target.tagName == 'CARD-T' && target.rank != 0) {
+      if (areCardsAbove(target)) {
+        target = moveFewCards(target);
+      }
+
       firstTop = target.style.top;
       target.moving = true;
       target.classList.add("card-is-moving");
@@ -116,3 +120,27 @@ function reverseAllCards() {
 }
 
 function isCardBellowGood(elementsBellow, movingCard) { return true; };
+
+function moveFewCards(handledCard) {
+  const cardsAbove = areCardsAbove(handledCard);
+  const movingCards = document.createElement('div');
+    handledCard.parentNode.append(movingCards);
+    while (cardsAbove.length) {
+      movingCards.append(cardsAbove.shift());
+  }
+  return movingCards;
+}
+
+function areCardsAbove(checkedCard) {
+  let cardsAbove = [];
+  let currentElement = checkedCard;
+  while (currentElement) {
+    cardsAbove.push(currentElement);
+    currentElement = currentElement.nextElementSibling;
+  }
+  if (cardsAbove.length > 1) {
+    return cardsAbove;
+  } else {
+    return undefined;
+  }
+}
