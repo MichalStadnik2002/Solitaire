@@ -60,14 +60,12 @@ document.addEventListener('mouseup', (e) => {
   const elementsBellow = whatIsBellow();
   const movingCard = document.querySelector('.card-is-moving');
   if (movingCard) {
-    // const initialPile = movingCard.parentNode;
     movingCard.classList.remove('card-is-moving');
     if (isCardBellowGood(elementsBellow, movingCard)) {
       if (elementsBellow[2]) { //temporary until function isCardBellowGood not exsist
         const movingCardObject = cardToObject(movingCard);
         const targetArray = pileToSubarray(elementsBellow[2])
         const initialArray = pileToSubarray(initialPile)
-        // const initialArray = pileToSubarray(initialPile)
 
         initialArray.splice(initialArray.indexOf(movingCardObject), 1);
         targetArray.push(movingCardObject);
@@ -76,7 +74,7 @@ document.addEventListener('mouseup', (e) => {
         movingCard.style.left = 0;
         movingCard.style.top = `${1.2 * (elementsBellow[2].children.length - 1)}vw`;
 
-        if (initialPile.lastChild && initialPile != elementsBellow[2]) {
+        if (initialPile.lastChild && initialPile != elementsBellow[2] && initialPile.id != 'unreversed_cards') {
           reverseCard(initialPile.lastChild);
         }
       }
@@ -94,30 +92,25 @@ function whatIsBellow() {
   targetDiv = Array.from(targetDiv);
   targetDiv.splice(0, 4);
   return targetDiv;
-  }
+}
+  
+const reversedCards = document.getElementById("reversed_cards");
+const unreversedCards = document.getElementById("unreversed_cards");
 
 function reverseRemainingCard(reversedCard) {
-  const reversedCards = document.getElementById('reversed_cards');
-  const cardObject = cardToObject(reversedCard);
-  reversedCard.setAttribute('rank', cardObject.rank);
-  reversedCard.setAttribute('suit', cardObject.suit);
+  reverseCard(reversedCard);
   
   arrangedCards[7].push(arrangedCards[8].pop());
   
-  const unreversedCards = document.getElementById('unreversed_cards');
   reversedCards.removeChild(reversedCard);
   unreversedCards.appendChild(reversedCard);
-  reversedCard.style.bottom = `${10.82 * getIndexInParentElement(reversedCard)}vw`;
 }
 
 function reverseAllCards() {
-  const reversedCards = document.getElementById("reversed_cards");
-  const unreversedCards = document.getElementById("unreversed_cards");
   const children = unreversedCards.children;
   for (let i = children.length - 1, j = 0; i >= 0; i--, j++) {
     arrangedCards[8].push(arrangedCards[7].pop());
-    children[i].setAttribute('rank', '0');
-    children[i].style.bottom = `${10.82 * j}vw`;
+    reverseCard(children[i])
     reversedCards.appendChild(children[i]);
   }
 }
