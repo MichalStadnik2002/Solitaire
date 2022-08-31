@@ -73,7 +73,7 @@ document.addEventListener('mouseup', (e) => {
   } else if (movingElement.tagName === 'CARD-T') {
     movingCard = movingElement
   }
-  // console.log(movingCard, movingDiv, elementsBellow);
+
   if (movingCard) {
     movingElement.classList.remove('card-is-moving');
     if (isCardBellowGood(elementsBellow, movingCard)) {
@@ -105,7 +105,7 @@ const reversedCards = document.getElementById("reversed_cards");
 const unreversedCards = document.getElementById("unreversed_cards");
 
 function reverseRemainingCard(reversedCard) {
-  reverseCard(reversedCard);
+  reverseCard(reversedCard, true);
   
   arrangedCards[7].push(arrangedCards[8].pop());
   
@@ -117,7 +117,7 @@ function reverseAllCards() {
   const children = unreversedCards.children;
   for (let i = children.length - 1, j = 0; i >= 0; i--, j++) {
     arrangedCards[8].push(arrangedCards[7].pop());
-    reverseCard(children[i])
+    reverseCard(children[i], true)
     reversedCards.appendChild(children[i]);
   }
 }
@@ -159,7 +159,7 @@ function putFewCards(divWithCards, targetPile) {
       };
       divWithCards.remove();
       if (!Number(initialPile.lastChild.rank)) {
-        reverseCard(initialPile.lastChild);
+        reverseCard(initialPile.lastChild, false);
       }
     }  
 }
@@ -176,11 +176,8 @@ function putCardOnThePile(card, initialPile, targetPile) {
   card.style.left = 0;
   card.style.top = `${1.2 * (targetPile.children.length - 1)}vw`;
 
-  if (initialPile.lastChild && initialPile !== targetPile && initialPile.id !== 'unreversed_cards'){
-    reverseCard(initialPile.lastChild);
+  if (initialPile.lastChild){
+    reverseCard(initialPile.lastChild, false);
   }
 
 }
-
-//podczas przenoszenia kilku kart pojawiają się w tablicy undefined 🤷‍♀️
-//trzeba sprawdzić co się dzieje w bufferze podczas przenoszenia, oraz co się dzieje z danymi obiektami

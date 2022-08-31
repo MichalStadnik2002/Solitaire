@@ -247,7 +247,7 @@ function getIndexInParentElement(element) {
   return parentIndex;
 }
 
-function reverseCard(cardT) {
+function reverseCard(cardT, reverseUnreversedCards) {
   if (cardT.tagName != "CARD-T") {
     return undefined;
   }
@@ -257,7 +257,10 @@ function reverseCard(cardT) {
   if (cardT.rank == 0) {
     cardT.setAttribute("rank", cardObject.rank);
     cardT.setAttribute("suit", cardObject.suit);
-  } else {
+  } else if (reverseUnreversedCards){
     cardT.setAttribute("rank", '0');
+  }
+  else {
+    return undefined;
   }
 }
