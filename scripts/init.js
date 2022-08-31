@@ -163,7 +163,7 @@ function cardToObject(cardT) {
 //convert given pile div to responding subarray in arranged_card
 
 function pileToSubarray(pile) {
-  if (!(pile.tagName == 'DIV' && pile.classList.contains('card_area'))) {
+  if (!(pile.tagName == 'DIV' && (pile.classList.contains('card_area') || pile.classList.contains('buffer')))) {
     return undefined;
   } 
   
@@ -196,6 +196,10 @@ switch (pileClass) {
   case "final_area":
     const finalAreaNumber = parseInt(pileId.replace("final_area_", ""));
     getSubarray(finalAreaNumber + 8);
+    break;
+  case "buffer":
+    subarray = buffer;
+    break;
   default:
     break;
   }
