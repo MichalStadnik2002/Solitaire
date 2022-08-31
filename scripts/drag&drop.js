@@ -1,4 +1,5 @@
 let initialPile, target;
+let buffer = [];
   
   //code bellow is based on code from https://stackoverflow.com/a/63425707/19125705
   //original comments was delated for code clarity
@@ -11,8 +12,9 @@ function filter(e) {
     } else if (e.target.id == 'reversed_cards') {
       reverseAllCards();
     } else if (target.tagName == 'CARD-T' && target.rank != 0) {
-      if (areCardsAbove(target)) {
-        target = moveFewCards(target);
+      const cardsAbove = areCardsAbove(target);
+      if (cardsAbove) {
+        target = moveFewCards(target, cardsAbove);
       }
 
       firstTop = target.style.top;
@@ -62,32 +64,33 @@ document.ontouchstart = filter;
 //consistently, here should be added event listener for touch up
 document.addEventListener('mouseup', (e) => {
   const elementsBellow = whatIsBellow();
-  const movingCard = document.querySelector('.card-is-moving');
+  let movingElement = document.querySelector('.card-is-moving');
+  let movingDiv, movingCard;
+
+  if (movingElement.tagName === 'DIV') {
+    movingDiv = movingElement;
+    movingCard = movingElement.childNodes[0];
+  } else if (movingElement.tagName === 'CARD-T') {
+    movingCard = movingElement
+  }
+  // console.log(movingCard, movingDiv, elementsBellow);
   if (movingCard) {
-    movingCard.classList.remove('card-is-moving');
+    movingElement.classList.remove('card-is-moving');
     if (isCardBellowGood(elementsBellow, movingCard)) {
       if (elementsBellow[2]) { //temporary until function isCardBellowGood not exsist
-        const movingCardObject = cardToObject(movingCard);
-        const targetArray = pileToSubarray(elementsBellow[2])
-        const initialArray = pileToSubarray(initialPile)
-
-        initialArray.splice(initialArray.indexOf(movingCardObject), 1);
-        targetArray.push(movingCardObject);
-
-        elementsBellow[2].append(movingCard);
-        movingCard.style.left = 0;
-        movingCard.style.top = `${1.2 * (elementsBellow[2].children.length - 1)}vw`;
-
-        if (initialPile.lastChild && initialPile != elementsBellow[2] && initialPile.id != 'unreversed_cards') {
-          reverseCard(initialPile.lastChild);
+        if (movingDiv) {
+          putFewCards(movingDiv, elementsBellow[2]);
+        } else {
+          
+          putCardOnThePile(movingCard, initialPile, elementsBellow[2]);
         }
       }
     }
     else {
-      movingCard.style.left = 0;
-      movingCard.style.top = firstTop;
+      movingElement.style.left = 0;
+      movingElement.style.top = firstTop;
     }
-    movingCard.moving = false;
+    movingElement.moving = false;
   }
 })
 
@@ -121,26 +124,63 @@ function reverseAllCards() {
 
 function isCardBellowGood(elementsBellow, movingCard) { return true; };
 
-function moveFewCards(handledCard) {
-  const cardsAbove = areCardsAbove(handledCard);
+function moveFewCards(handledCard, cardsAbove) {
   const movingCards = document.createElement('div');
-    handledCard.parentNode.append(movingCards);
-    while (cardsAbove.length) {
-      movingCards.append(cardsAbove.shift());
+  movingCards.classList.add('buffer');
+  handledCard.parentNode.append(movingCards);
+  while (cardsAbove.length) {
+    movingCards.append(cardsAbove.shift());
   }
   return movingCards;
 }
 
 function areCardsAbove(checkedCard) {
   let cardsAbove = [];
+  let parentArray = pileToSubarray(checkedCard.parentNode);
+  let checkedCardObject = cardToObject(checkedCard);
   let currentElement = checkedCard;
   while (currentElement) {
     cardsAbove.push(currentElement);
     currentElement = currentElement.nextElementSibling;
   }
   if (cardsAbove.length > 1) {
+    buffer = parentArray.splice(parentArray.indexOf(checkedCardObject))
     return cardsAbove;
   } else {
     return undefined;
   }
 }
+
+function putFewCards(divWithCards, targetPile) {
+    if (targetPile.classList[0] === 'pile') {
+      let children = Array.from(divWithCards.children);
+      while (children.length) {
+        putCardOnThePile(children.shift(), divWithCards, targetPile);
+      };
+      divWithCards.remove();
+      if (!Number(initialPile.lastChild.rank)) {
+        reverseCard(initialPile.lastChild);
+      }
+    }  
+}
+
+function putCardOnThePile(card, initialPile, targetPile) {
+  const movingCardObject = cardToObject(card);
+  const targetArray = pileToSubarray(targetPile);
+  const initialArray = pileToSubarray(initialPile);
+
+  initialArray.splice(initialArray.indexOf(movingCardObject), 1);
+  targetArray.push(movingCardObject);
+
+  targetPile.append(card);
+  card.style.left = 0;
+  card.style.top = `${1.2 * (targetPile.children.length - 1)}vw`;
+
+  if (initialPile.lastChild && initialPile !== targetPile && initialPile.id !== 'unreversed_cards'){
+    reverseCard(initialPile.lastChild);
+  }
+
+}
+
+//podczas przenoszenia kilku kart pojawiają się w tablicy undefined 🤷‍♀️
+//trzeba sprawdzić co się dzieje w bufferze podczas przenoszenia, oraz co się dzieje z danymi obiektami
