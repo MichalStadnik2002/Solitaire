@@ -74,6 +74,7 @@ document.addEventListener('mouseup', (e) => {
     movingCard = movingElement
   }
 
+  console.log(elementsBellow)
   if (movingCard) {
     movingElement.classList.remove('card-is-moving');
     if (isCardBellowGood(elementsBellow, movingCard)) {
@@ -122,7 +123,64 @@ function reverseAllCards() {
   }
 }
 
-function isCardBellowGood(elementsBellow, movingCard) { return true; };
+function isCardBellowGood(elementsBellow, movingCard) {
+  let rankOfMovingCard = Number(movingCard.rank);
+  const suitOfMovingCard = Number(movingCard.suit);
+  const targetPile = elementsBellow[2];
+  const targetCard = elementsBellow[3];
+  if (rankOfMovingCard >= 2 && rankOfMovingCard <= 12) {
+    rankOfMovingCard = 'some card';
+  }
+  switch (rankOfMovingCard) {
+    case 1:
+      if (targetPile.classList.contains('final_area')) {
+        return true;
+      } else {
+        return false;
+      }
+      break;
+    case 13:
+      if (targetPile.classList.contains('pile') && !targetPile.childNodes.length) {
+        return true;
+      }
+      else if (targetPile.classList.contains('final_area')) {
+        if (Number(targetCard.rank) === 12 && Number(targetCard.suit) === suitOfMovingCard) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+      else {
+        return false;
+      }
+      break;
+    case 'some card':
+      rankOfMovingCard = Number(movingCard.rank);
+      if (targetPile.classList.contains('pile') && targetPile.childNodes.length) {
+        if (Number(targetCard.rank) === rankOfMovingCard + 1 && Number(Boolean(suitOfMovingCard % 3)) === Number(!Boolean(Number(targetCard.suit)%3))) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      } else if (targetPile.classList.contains("final_area") && targetPile.childNodes.length) {
+        if (
+          Number(targetCard.rank) === rankOfMovingCard - 1 &&
+          Number(targetCard.suit) === suitOfMovingCard
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+      break
+    default:
+      break;
+  }
+ };
 
 function moveFewCards(handledCard, cardsAbove) {
   const movingCards = document.createElement('div');
