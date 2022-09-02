@@ -1,4 +1,6 @@
-let initialPile, target;
+'use strict';
+
+let initialPile, target, firstTop;
 let buffer = [];
   
   //code bellow is based on code from https://stackoverflow.com/a/63425707/19125705
