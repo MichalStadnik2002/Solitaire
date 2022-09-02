@@ -65,35 +65,36 @@ document.onmousedown = filter;
 document.ontouchstart = filter;
 //consistently, here should be added event listener for touch up
 document.addEventListener('mouseup', (e) => {
-  const elementsBellow = whatIsBellow();
   let movingElement = document.querySelector('.card-is-moving');
-  let movingDiv, movingCard;
+  if (movingElement) {
+    const elementsBellow = whatIsBellow();
+    let movingDiv, movingCard;
 
-  if (movingElement.tagName === 'DIV') {
-    movingDiv = movingElement;
-    movingCard = movingElement.childNodes[0];
-  } else if (movingElement.tagName === 'CARD-T') {
-    movingCard = movingElement
-  }
+    if (movingElement.tagName === 'DIV') {
+      movingDiv = movingElement;
+      movingCard = movingElement.childNodes[0];
+    } else if (movingElement.tagName === 'CARD-T') {
+      movingCard = movingElement
+    }
 
-  console.log(elementsBellow)
-  if (movingCard) {
-    movingElement.classList.remove('card-is-moving');
-    if (isCardBellowGood(elementsBellow, movingCard)) {
-      if (elementsBellow[2]) { //temporary until function isCardBellowGood not exsist
-        if (movingDiv) {
-          putFewCards(movingDiv, elementsBellow[2]);
-        } else {
+    if (movingCard) {
+      movingElement.classList.remove('card-is-moving');
+      if (isCardBellowGood(elementsBellow, movingCard)) {
+        if (elementsBellow[2]) { //temporary until function isCardBellowGood not exsist
+          if (movingDiv) {
+            putFewCards(movingDiv, elementsBellow[2]);
+          } else {
           
-          putCardOnThePile(movingCard, initialPile, elementsBellow[2]);
+            putCardOnThePile(movingCard, initialPile, elementsBellow[2]);
+          }
         }
       }
+      else {
+        movingElement.style.left = 0;
+        movingElement.style.top = firstTop;
+      }
+      movingElement.moving = false;
     }
-    else {
-      movingElement.style.left = 0;
-      movingElement.style.top = firstTop;
-    }
-    movingElement.moving = false;
   }
 })
 
