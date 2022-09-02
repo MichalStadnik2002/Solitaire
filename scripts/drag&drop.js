@@ -219,7 +219,7 @@ function putFewCards(divWithCards, targetPile) {
         putCardOnThePile(children.shift(), divWithCards, targetPile);
       };
       divWithCards.remove();
-      if (!Number(initialPile.lastChild.rank)) {
+      if (initialPile.childNodes.length && !Number(initialPile.lastChild.rank)) {
         reverseCard(initialPile.lastChild, false);
       }
     }  
