@@ -1,3 +1,5 @@
+'use strict';
+
 //Slide up Initial Page
 
 const button = document.getElementById("start_button");
@@ -104,9 +106,9 @@ shuffledCards = shuffledCards.flat();
 
 let arrangedCards = Array.from(Array(13), () => new Array(0));
 
-for (i = 6; i >= 0; i--) {
+for (let i = 6; i >= 0; i--) {
   const actualPile = document.getElementById(`pile_${i + 1}`);
-  for (j = 0; j <= i; j++) {
+  for (let j = 0; j <= i; j++) {
     arrangedCards[i][j] = shuffledCards.pop();
     arrangedCards[i][j].pileIndex = i;
     arrangedCards[i][j].indexInPile = j;
@@ -140,7 +142,7 @@ console.log(arrangedCards);
 
 const reversedRemainigCards = document.getElementById("reversed_cards");
 
-for (i = arrangedCards[8].length - 1; i >= 0; i--) {
+for (let i = arrangedCards[8].length - 1; i >= 0; i--) {
   const ActualCard = arrangedCards[8][i];
   ActualCard.indexInPile = i;
   ActualCard.genereteCardElement(reversedRemainigCards, false);
