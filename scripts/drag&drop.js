@@ -82,24 +82,19 @@ document.addEventListener('mouseup', (e) => {
       movingCard = movingElement
     }
 
-    if (movingCard) {
       movingElement.classList.remove('card-is-moving');
-      if (isCardBellowGood(elementsBellow, movingCard)) {
-        if (elementsBellow[2]) { //temporary until function isCardBellowGood not exsist
+      movingElement.moving = false;
+      if (elementsBellow[2] && isCardBellowGood(elementsBellow, movingCard)) {
           if (movingDiv) {
             putFewCards(movingDiv, elementsBellow[2]);
           } else {
-          
             putCardOnThePile(movingCard, initialPile, elementsBellow[2]);
           }
-        }
-      }
-      else {
+        } else {
         movingElement.style.left = 0;
         movingElement.style.top = firstTop;
       }
-      movingElement.moving = false;
-    }
+    
   }
 })
 
