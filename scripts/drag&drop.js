@@ -8,7 +8,8 @@ let buffer = [];
 function filter(e) {
   target = e.target.parentNode;
   initialPile = target.parentNode;
-    
+  
+  try {
     if ((target.parentNode.id == 'reversed_cards')) {
       reverseRemainingCard(target);
     } else if (e.target.id == 'reversed_cards') {
@@ -59,6 +60,10 @@ function filter(e) {
     } else {
       return;
     }
+  }
+  catch {
+    return undefined;
+  }
 }
   
 document.onmousedown = filter;
