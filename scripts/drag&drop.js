@@ -229,13 +229,21 @@ function putCardOnThePile(card, initialPile, targetPile) {
   const movingCardObject = cardToObject(card);
   const targetArray = pileToSubarray(targetPile);
   const initialArray = pileToSubarray(initialPile);
+  let shift;
 
   initialArray.splice(initialArray.indexOf(movingCardObject), 1);
   targetArray.push(movingCardObject);
 
   targetPile.append(card);
   card.style.left = 0;
-  card.style.top = `${1.2 * (targetPile.children.length - 1)}vw`;
+  if (card.previousElementSibling) {
+    shift = `${Number(card.previousElementSibling.style.top.replace('vw', '')) + 1.5}vw`;
+    console.log(shift, typeof(shift));
+    shift === 'NaNvw' ? card.style.top = '1.5vw' : card.style.top = shift;
+  }
+  else {
+    card.style.top = 0;
+  }
 
   if (initialPile.lastChild){
     reverseCard(initialPile.lastChild, false);
