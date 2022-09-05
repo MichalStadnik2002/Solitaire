@@ -236,9 +236,8 @@ function putCardOnThePile(card, initialPile, targetPile) {
 
   targetPile.append(card);
   card.style.left = 0;
-  if (card.previousElementSibling) {
+  if (card.previousElementSibling && !targetPile.classList.contains('final_area')) {
     shift = `${Number(card.previousElementSibling.style.top.replace('vw', '')) + 1.5}vw`;
-    console.log(shift, typeof(shift));
     shift === 'NaNvw' ? card.style.top = '1.5vw' : card.style.top = shift;
   }
   else {
