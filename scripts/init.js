@@ -2,7 +2,8 @@
 
 /* -------------------- All DOM Handles ----------------------------------- */
 
-const reversedRemainigCards = document.getElementById("reversed_cards");
+const reversedCards = document.getElementById("reversed_cards");
+const unreversedCards = document.getElementById("unreversed_cards");
 const button = document.getElementById("start_button");
 const initial_page = document.getElementById("initial_page");
 
@@ -50,11 +51,11 @@ const Card = function (numberToRank, numberToSuit) {
     newCard.style.position = "absolute";
     newCard.style.top = `${1 * shift}vw`;
     newCard.setAttribute("rank", "0");
-    
-  if (this.pileIndex === 8) {
-    newCard.style.top = '0vw';
-  }
-    else if (!isReversed) {
+    newCard.setAttribute("suit", "0");
+
+    if (this.pileIndex === 8) {
+      newCard.style.top = "0vw";
+    } else if (!isReversed) {
       newCard.setAttribute("rank", this.rank);
       newCard.setAttribute("suit", this.suit);
       this.isOnView = true;
@@ -105,7 +106,6 @@ function getArrangedCards() {
   deckShuffler(deck, shuffledCards);
   shuffledCards = shuffledCards.flat();
   arrangeCards(arrangedCards, shuffledCards);
-  console.log(JSON.parse(JSON.stringify(arrangedCards)))
 }
 
 //Generate 52-card deck
@@ -126,11 +126,7 @@ function deckShuffler(deckArray, shuffledCardsArray) {
 }
 
 function arrangeCards(arrangedCardsArray, shuffledCardsArray) {
-  for (
-    let i = 6;
-    i >= 0;
-    i--
-  ) {
+  for (let i = 6; i >= 0; i--) {
     const actualPile = document.getElementById(`pile_${i + 1}`);
     for (let j = 0; j <= i; j++) {
       const isLastCard = j === i ? true : false;
@@ -150,7 +146,7 @@ function arrangeCards(arrangedCardsArray, shuffledCardsArray) {
     moveCardAndGenerateCardT(
       shuffledCardsArray,
       arrangedCardsArray[8],
-      reversedRemainigCards,
+      reversedCards,
       8,
       i,
       true
