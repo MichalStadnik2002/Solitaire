@@ -1,11 +1,20 @@
 'use strict';
 
+/* ---------- Global variables ------------- */
+
 let initialPile, target, firstTop;
 let buffer = [];
-  
-  //code bellow is based on code from https://stackoverflow.com/a/63425707/19125705
-  //original comments was delated for code clarity
-function filter(e) {
+
+/* ----- Moving cards section ----- */
+
+document.onmousedown = pickUpCard;
+document.ontouchstart = pickUpCard;
+document.onmouseup = putCard;
+document.ontouchend = putCard;
+
+//code bellow is based on code from https://stackoverflow.com/a/63425707/19125705
+//original comments was delated for code clarity
+function pickUpCard(e) {
   target = e.target.parentNode;
   initialPile = target.parentNode;
   
@@ -19,44 +28,9 @@ function filter(e) {
       if (cardsAbove) {
         target = moveFewCards(target, cardsAbove);
       }
-
-      firstTop = target.style.top;
-      target.moving = true;
-      target.classList.add("card-is-moving");
-    
-
-      if (e.clientX) {
-        target.oldX = e.clientX;
-        target.oldY = e.clientY;
-      } else {
-        target.oldX = e.touches[0].clientX;
-        target.oldY = e.touches[0].clientY;
-      }
-
-      target.oldLeft = window.getComputedStyle(target).getPropertyValue('left').split('px')[0] * 1;
-      target.oldTop = window.getComputedStyle(target).getPropertyValue('top').split('px')[0] * 1;
-
-      document.onmousemove = dr;
-      document.ontouchmove = dr;
-
-      function dr(event) {
-        event.preventDefault();
-
-        if (!target.moving) {
-          return;
-        }
-        if (event.clientX) {
-          target.distX = event.clientX - target.oldX;
-          target.distY = event.clientY - target.oldY;
-        } else {
-          target.distX = event.touches[0].clientX - target.oldX;
-          target.distY = event.touches[0].clientY - target.oldY;
-        }
-
-        target.style.left = target.oldLeft + target.distX + "px";
-        target.style.top = target.oldTop + target.distY + "px";
-      }
-
+      
+      moveCard(e, target);
+      
     } else {
       return;
     }
@@ -65,125 +39,45 @@ function filter(e) {
     return undefined;
   }
 }
+
+function moveCard(e, card) {
+  firstTop = card.style.top;
+  card.moving = true;
+  card.classList.add("card-is-moving");
   
-document.onmousedown = filter;
-document.ontouchstart = filter;
-//consistently, here should be added event listener for touch up
-document.addEventListener('mouseup', (e) => {
-  let movingElement = document.querySelector('.card-is-moving');
-  if (movingElement) {
-    const elementsBellow = whatIsBellow();
-    let movingDiv, movingCard;
-
-    if (movingElement.tagName === 'DIV') {
-      movingDiv = movingElement;
-      movingCard = movingElement.childNodes[0];
-    } else if (movingElement.tagName === 'CARD-T') {
-      movingCard = movingElement
-    }
-
-      movingElement.classList.remove('card-is-moving');
-      movingElement.moving = false;
-      if (elementsBellow[2] && isCardBellowGood(elementsBellow, movingCard)) {
-          if (movingDiv) {
-            putFewCards(movingDiv, elementsBellow[2]);
-          } else {
-            putCardOnThePile(movingCard, initialPile, elementsBellow[2]);
-          }
-        } else {
-        movingElement.style.left = 0;
-        movingElement.style.top = firstTop;
-      }
+  
+  if (e.clientX) {
+    card.oldX = e.clientX;
+    card.oldY = e.clientY;
+  } else {
+    card.oldX = e.touches[0].clientX;
+    card.oldY = e.touches[0].clientY;
+  }
+  
+  card.oldLeft = window.getComputedStyle(card).getPropertyValue('left').split('px')[0] * 1;
+  card.oldTop = window.getComputedStyle(card).getPropertyValue('top').split('px')[0] * 1;
+  
+  document.onmousemove = move;
+  document.ontouchmove = move;
+  
+  function move(event) {
+    event.preventDefault();
     
-  }
-})
-
-function whatIsBellow() {
-  let targetDiv = document.querySelectorAll(":hover");
-  targetDiv = Array.from(targetDiv);
-  targetDiv.splice(0, 4);
-  return targetDiv;
-}
-  
-const reversedCards = document.getElementById("reversed_cards");
-const unreversedCards = document.getElementById("unreversed_cards");
-
-function reverseRemainingCard(reversedCard) {
-  reverseCard(reversedCard, true);
-  
-  arrangedCards[7].push(arrangedCards[8].pop());
-  
-  reversedCards.removeChild(reversedCard);
-  unreversedCards.appendChild(reversedCard);
-}
-
-function reverseAllCards() {
-  const children = unreversedCards.children;
-  for (let i = children.length - 1, j = 0; i >= 0; i--, j++) {
-    arrangedCards[8].push(arrangedCards[7].pop());
-    reverseCard(children[i], true)
-    reversedCards.appendChild(children[i]);
+    if (!card.moving) {
+      return;
+    }
+    if (event.clientX) {
+      card.distX = event.clientX - card.oldX;
+      card.distY = event.clientY - card.oldY;
+    } else {
+      card.distX = event.touches[0].clientX - card.oldX;
+      card.distY = event.touches[0].clientY - card.oldY;
+    }
+    
+    card.style.left = card.oldLeft + card.distX + "px";
+    card.style.top = card.oldTop + card.distY + "px";
   }
 }
-
-function isCardBellowGood(elementsBellow, movingCard) {
-  let rankOfMovingCard = Number(movingCard.rank);
-  const suitOfMovingCard = Number(movingCard.suit);
-  const targetPile = elementsBellow[2];
-  const targetCard = elementsBellow[3];
-  if (rankOfMovingCard >= 2 && rankOfMovingCard <= 12) {
-    rankOfMovingCard = 'some card';
-  }
-  switch (rankOfMovingCard) {
-    case 1:
-      if (targetPile.classList.contains('final_area')) {
-        return true;
-      } else {
-        return false;
-      }
-      break;
-    case 13:
-      if (targetPile.classList.contains('pile') && !targetPile.childNodes.length) {
-        return true;
-      }
-      else if (targetPile.classList.contains('final_area')) {
-        if (Number(targetCard.rank) === 12 && Number(targetCard.suit) === suitOfMovingCard) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      }
-      else {
-        return false;
-      }
-      break;
-    case 'some card':
-      rankOfMovingCard = Number(movingCard.rank);
-      if (targetPile.classList.contains('pile') && targetPile.childNodes.length) {
-        if (Number(targetCard.rank) === rankOfMovingCard + 1 && Number(Boolean(suitOfMovingCard % 3)) === Number(!Boolean(Number(targetCard.suit)%3))) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      } else if (targetPile.classList.contains("final_area") && targetPile.childNodes.length) {
-        if (
-          Number(targetCard.rank) === rankOfMovingCard - 1 &&
-          Number(targetCard.suit) === suitOfMovingCard
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-      break
-    default:
-      break;
-  }
- };
 
 function moveFewCards(handledCard, cardsAbove) {
   const movingCards = document.createElement('div');
@@ -194,6 +88,73 @@ function moveFewCards(handledCard, cardsAbove) {
   }
   return movingCards;
 }
+
+function putCard(e) {
+  let movingElement = document.querySelector('.card-is-moving');
+  let movingDiv, movingCard;
+  if (movingElement) {
+    const elementsBellow = whatIsBellow();
+    
+    if (movingElement.tagName === 'DIV') {
+      movingDiv = movingElement;
+      movingCard = movingElement.childNodes[0];
+    } else if (movingElement.tagName === 'CARD-T') {
+      movingCard = movingElement
+    }
+    
+    movingElement.classList.remove('card-is-moving');
+    movingElement.moving = false;
+    if (elementsBellow[2] && isCardBellowGood(elementsBellow, movingCard)) {
+      if (movingDiv) {
+        putFewCards(movingDiv, elementsBellow[2]);
+      } else {
+        putCardOnThePile(movingCard, initialPile, elementsBellow[2]);
+      }
+    } else {
+      movingElement.style.left = 0;
+      movingElement.style.top = firstTop;
+    }
+  }
+}
+
+function putCardOnThePile(card, initialPile, targetPile) {
+  const movingCardObject = cardToObject(card);
+  const targetArray = pileToSubarray(targetPile);
+  const initialArray = pileToSubarray(initialPile);
+  let shift;
+  
+  initialArray.splice(initialArray.indexOf(movingCardObject), 1);
+  targetArray.push(movingCardObject);
+  
+  targetPile.append(card);
+  card.style.left = 0;
+  if (card.previousElementSibling && !targetPile.classList.contains('final_area')) {
+    shift = `${Number(card.previousElementSibling.style.top.replace('vw', '')) + 1.5}vw`;
+    shift === 'NaNvw' ? card.style.top = '1.5vw' : card.style.top = shift;
+  }
+  else {
+    card.style.top = 0;
+  }
+  
+  if (initialPile.lastChild){
+    reverseCard(initialPile.lastChild, false);
+  }
+}
+
+function putFewCards(divWithCards, targetPile) {
+  if (targetPile.classList[0] === 'pile') {
+    let children = Array.from(divWithCards.children);
+    while (children.length) {
+      putCardOnThePile(children.shift(), divWithCards, targetPile);
+    };
+    divWithCards.remove();
+      if (initialPile.childNodes.length && !Number(initialPile.lastChild.rank)) {
+        reverseCard(initialPile.lastChild, false);
+      }
+    }  
+}
+
+/* ---------- Checking functions --------------- */
 
 function areCardsAbove(checkedCard) {
   let cardsAbove = [];
@@ -212,40 +173,78 @@ function areCardsAbove(checkedCard) {
   }
 }
 
-function putFewCards(divWithCards, targetPile) {
-    if (targetPile.classList[0] === 'pile') {
-      let children = Array.from(divWithCards.children);
-      while (children.length) {
-        putCardOnThePile(children.shift(), divWithCards, targetPile);
-      };
-      divWithCards.remove();
-      if (initialPile.childNodes.length && !Number(initialPile.lastChild.rank)) {
-        reverseCard(initialPile.lastChild, false);
+
+function whatIsBellow() {
+    let targetDiv = document.querySelectorAll(":hover");
+    targetDiv = Array.from(targetDiv);
+    targetDiv.splice(0, 4);
+  return targetDiv;
+}
+
+function reverseRemainingCard(reversedCard) {
+  reverseCard(reversedCard, true);
+  
+  arrangedCards[7].push(arrangedCards[8].pop());
+  
+  reversedCards.removeChild(reversedCard);
+  unreversedCards.appendChild(reversedCard);
+}
+
+function reverseAllCards() {
+  const children = unreversedCards.children;
+  for (let i = children.length - 1; i >= 0; i--) {
+    arrangedCards[8].push(arrangedCards[7].pop());
+    reverseCard(children[i], true)
+    reversedCards.appendChild(children[i]);
+  }
+}
+
+function isCardBellowGood(elementsBellow, movingCard) {
+  const movingCardObject = cardToObject(movingCard)
+  let rankOfMovingCard = Number(movingCardObject.rank);
+  const suitOfMovingCard = Number(movingCardObject.suit);
+  const targetPile = elementsBellow[2];
+  let targetCard = elementsBellow[3];
+  let higherRankCondition, lowerRankCondition, opositeSuitCondition, sameSuitCondition;
+  
+  if (targetCard) {
+    targetCard = cardToObject(targetCard)
+    higherRankCondition = Number(targetCard.rank) === rankOfMovingCard + 1;
+    lowerRankCondition = Number(targetCard.rank) === rankOfMovingCard - 1;
+    opositeSuitCondition = Number(Boolean(suitOfMovingCard % 3)) === Number(!Boolean(Number(targetCard.suit) % 3));
+    sameSuitCondition = Number(targetCard.suit) === suitOfMovingCard;
+  }
+  
+  const isTargetFinalArea = targetPile.classList.contains("final_area");
+  const isTargetPile = targetPile.classList.contains('pile')
+
+  if (rankOfMovingCard >= 2 && rankOfMovingCard <= 12) {
+    rankOfMovingCard = "other card";
+  }
+
+  switch (rankOfMovingCard) {
+    case 1: //Ase
+      return isTargetFinalArea ? true : false;
+    case 13: //King
+      if (isTargetPile && !targetPile.childNodes.length) {
+        return true;
       }
-    }  
-}
-
-function putCardOnThePile(card, initialPile, targetPile) {
-  const movingCardObject = cardToObject(card);
-  const targetArray = pileToSubarray(targetPile);
-  const initialArray = pileToSubarray(initialPile);
-  let shift;
-
-  initialArray.splice(initialArray.indexOf(movingCardObject), 1);
-  targetArray.push(movingCardObject);
-
-  targetPile.append(card);
-  card.style.left = 0;
-  if (card.previousElementSibling && !targetPile.classList.contains('final_area')) {
-    shift = `${Number(card.previousElementSibling.style.top.replace('vw', '')) + 1.5}vw`;
-    shift === 'NaNvw' ? card.style.top = '1.5vw' : card.style.top = shift;
+      else if (isTargetFinalArea) {
+        return lowerRankCondition && sameSuitCondition ? true : false; 
+      }
+      else {
+        return false;
+      }
+    case 'other card':
+      rankOfMovingCard = Number(movingCard.rank);
+      if (isTargetPile && targetPile.childNodes.length) {
+        return higherRankCondition && opositeSuitCondition ? true : false;
+      } else if (isTargetFinalArea && targetPile.childNodes.length) {
+        return lowerRankCondition && sameSuitCondition ? true : false
+      } else {
+        return false;
+      }
+    default:
+      break;
   }
-  else {
-    card.style.top = 0;
-  }
-
-  if (initialPile.lastChild){
-    reverseCard(initialPile.lastChild, false);
-  }
-
-}
+ };
