@@ -117,23 +117,26 @@ function putCard(e) {
 }
 
 function putCardOnThePile(card, initialPile, targetPile) {
+  if (card.classList.contains('buffer')) { return; }
   const movingCardObject = cardToObject(card);
   const targetArray = pileToSubarray(targetPile);
   const initialArray = pileToSubarray(initialPile);
   let shift;
-
+  
   initialArray.splice(initialArray.indexOf(movingCardObject), 1);
   targetArray.push(movingCardObject);
-
+  
   targetPile.append(card);
   card.style.left = 0;
+  const previousElement =
+    card.previousElementSibling && card.previousElementSibling.classList.contains("buffer")
+      ? card.previousElementSibling.previousElementSibling
+      : card.previousElementSibling;
   if (
-    card.previousElementSibling &&
+    previousElement &&
     !targetPile.classList.contains("final_area")
   ) {
-    shift = `${
-      Number(card.previousElementSibling.style.top.replace("vw", "")) + 1.5
-    }vw`;
+    shift =`${Number(previousElement.style.top.replace("vw", "")) + 1.5}vw`;
     shift === "NaNvw" ? (card.style.top = "1.5vw") : (card.style.top = shift);
   } else {
     card.style.top = 0;
