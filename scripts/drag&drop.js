@@ -89,54 +89,61 @@ function moveFewCards(handledCard, cardsAbove) {
 }
 
 function putCard(e) {
-  let movingElement = document.querySelector(".card-is-moving");
-  let movingDiv, movingCard;
-  if (movingElement) {
-    const elementsBellow = whatIsBellow();
+  let movingDiv, movingCard, cardBellow, pileBellow;
+  const movingElement = document.querySelector(".card-is-moving");
 
-    if (movingElement.tagName === "DIV") {
-      movingDiv = movingElement;
-      movingCard = movingElement.childNodes[0];
-    } else if (movingElement.tagName === "CARD-T") {
-      movingCard = movingElement;
-    }
+  if (e.target.parentNode.tagName === "CARD-T") {
+    cardBellow = e.target.parentNode;
+    pileBellow = cardBellow.parentNode;
+  } else if (
+    e.target.tagName === "DIV" &&
+    e.target.classList.contains("card_area")
+  ) {
+    pileBellow = e.target;
+  }
 
-    movingElement.classList.remove("card-is-moving");
-    movingElement.moving = false;
-    if (elementsBellow[2] && isCardBellowGood(elementsBellow, movingCard)) {
-      if (movingDiv) {
-        putFewCards(movingDiv, elementsBellow[2]);
-      } else {
-        putCardOnThePile(movingCard, initialPile, elementsBellow[2]);
-      }
+  if (!movingElement) return;
+
+  if (movingElement.tagName === "DIV") {
+    movingDiv = movingElement;
+    movingCard = movingElement.childNodes[0];
+  } else if (movingElement.tagName === "CARD-T") {
+    movingCard = movingElement;
+  }
+
+  movingElement.classList.remove("card-is-moving");
+  movingElement.moving = false;
+  if (pileBellow && isCardBellowGood(pileBellow, cardBellow, movingCard)) {
+    if (movingDiv) {
+      putFewCards(movingDiv, pileBellow);
     } else {
-      movingElement.style.left = 0;
-      movingElement.style.top = firstTop;
+      putCardOnThePile(movingCard, initialPile, pileBellow);
     }
+  } else {
+    movingElement.style.left = 0;
+    movingElement.style.top = firstTop;
   }
 }
 
 function putCardOnThePile(card, initialPile, targetPile) {
-  if (card.classList.contains('buffer')) { return; }
+  if (card.classList.contains("buffer")) return;
   const movingCardObject = cardToObject(card);
   const targetArray = pileToSubarray(targetPile);
   const initialArray = pileToSubarray(initialPile);
   let shift;
-  
+
   initialArray.splice(initialArray.indexOf(movingCardObject), 1);
   targetArray.push(movingCardObject);
-  
+
   targetPile.append(card);
   card.style.left = 0;
   const previousElement =
-    card.previousElementSibling && card.previousElementSibling.classList.contains("buffer")
+    card.previousElementSibling &&
+    card.previousElementSibling.classList.contains("buffer")
       ? card.previousElementSibling.previousElementSibling
       : card.previousElementSibling;
-  if (
-    previousElement &&
-    !targetPile.classList.contains("final_area")
-  ) {
-    shift =`${Number(previousElement.style.top.replace("vw", "")) + 1.5}vw`;
+  if (previousElement && !targetPile.classList.contains("final_area")) {
+    shift = `${Number(previousElement.style.top.replace("vw", "")) + 1.5}vw`;
     shift === "NaNvw" ? (card.style.top = "1.5vw") : (card.style.top = shift);
   } else {
     card.style.top = 0;
@@ -179,13 +186,6 @@ function areCardsAbove(checkedCard) {
   }
 }
 
-function whatIsBellow() {
-  let targetDiv = document.querySelectorAll(":hover");
-  targetDiv = Array.from(targetDiv);
-  targetDiv.splice(0, 4);
-  return targetDiv;
-}
-
 function reverseRemainingCard(reversedCard) {
   reverseCard(reversedCard, true);
 
@@ -204,12 +204,10 @@ function reverseAllCards() {
   }
 }
 
-function isCardBellowGood(elementsBellow, movingCard) {
+function isCardBellowGood(targetPile, targetCard, movingCard) {
   const movingCardObject = cardToObject(movingCard);
   let rankOfMovingCard = Number(movingCardObject.rank);
   const suitOfMovingCard = Number(movingCardObject.suit);
-  const targetPile = elementsBellow[2];
-  let targetCard = elementsBellow[3];
   let higherRankCondition,
     lowerRankCondition,
     opositeSuitCondition,
