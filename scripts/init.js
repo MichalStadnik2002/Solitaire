@@ -252,6 +252,24 @@ function reverseCard(cardT, reverseUnreversedCards = false) {
   }
 }
 
+function reverseRemainingCard(reversedCard) {
+  reverseCard(reversedCard, true);
+
+  arrangedCards[7].push(arrangedCards[8].pop());
+
+  reversedCards.removeChild(reversedCard);
+  unreversedCards.appendChild(reversedCard);
+}
+
+function reverseAllCards() {
+  const children = unreversedCards.children;
+  for (let i = children.length - 1; i >= 0; i--) {
+    arrangedCards[8].push(arrangedCards[7].pop());
+    reverseCard(children[i], true);
+    reversedCards.appendChild(children[i]);
+  }
+}
+
 /* ----------------------- Other functions ---------------------------------------- */
 
 function getIndexInParentElement(element) {

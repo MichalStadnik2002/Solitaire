@@ -91,6 +91,7 @@ function moveFewCards(handledCard, cardsAbove) {
 function putCard(e) {
   let movingDiv, movingCard, cardBellow, pileBellow;
   const movingElement = document.querySelector(".card-is-moving");
+  if (!movingElement) return;
 
   if (e.target.parentNode.tagName === "CARD-T") {
     cardBellow = e.target.parentNode;
@@ -101,8 +102,6 @@ function putCard(e) {
   ) {
     pileBellow = e.target;
   }
-
-  if (!movingElement) return;
 
   if (movingElement.tagName === "DIV") {
     movingDiv = movingElement;
@@ -183,24 +182,6 @@ function areCardsAbove(checkedCard) {
     return cardsAbove;
   } else {
     return undefined;
-  }
-}
-
-function reverseRemainingCard(reversedCard) {
-  reverseCard(reversedCard, true);
-
-  arrangedCards[7].push(arrangedCards[8].pop());
-
-  reversedCards.removeChild(reversedCard);
-  unreversedCards.appendChild(reversedCard);
-}
-
-function reverseAllCards() {
-  const children = unreversedCards.children;
-  for (let i = children.length - 1; i >= 0; i--) {
-    arrangedCards[8].push(arrangedCards[7].pop());
-    reverseCard(children[i], true);
-    reversedCards.appendChild(children[i]);
   }
 }
 
