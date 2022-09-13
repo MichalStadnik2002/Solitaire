@@ -126,13 +126,9 @@ function putCard(e) {
 
 function putCardOnThePile(card, initialPile, targetPile) {
   if (card.classList.contains("buffer")) return;
-  const movingCardObject = cardToObject(card);
-  const targetArray = pileToSubarray(targetPile);
-  const initialArray = pileToSubarray(initialPile);
   let shift;
 
-  initialArray.splice(initialArray.indexOf(movingCardObject), 1);
-  targetArray.push(movingCardObject);
+  moveObjectCardBetweenPiles(card, initialPile, targetPile);
 
   targetPile.append(card);
   card.style.left = 0;
@@ -159,6 +155,7 @@ function putFewCards(divWithCards, targetPile) {
     while (children.length) {
       putCardOnThePile(children.shift(), divWithCards, targetPile);
     }
+    console.log("usuwam");
     divWithCards.remove();
     if (initialPile.childNodes.length && !Number(initialPile.lastChild.rank)) {
       reverseCard(initialPile.lastChild, false);

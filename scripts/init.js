@@ -172,6 +172,7 @@ function moveCardAndGenerateCardT(
 /* -------------------- Card-T & piles functions ----------------------------------- */
 //convert given card-t to object
 function cardToObject(cardT) {
+  // console.log(cardT);
   if (cardT.tagName != "CARD-T") {
     return undefined;
   }
@@ -254,9 +255,7 @@ function reverseCard(cardT, reverseUnreversedCards = false) {
 
 function reverseRemainingCard(reversedCard) {
   reverseCard(reversedCard, true);
-
-  arrangedCards[7].push(arrangedCards[8].pop());
-
+  moveObjectCardBetweenPiles(reversedCard, reversedCards, unreversedCards);
   reversedCards.removeChild(reversedCard);
   unreversedCards.appendChild(reversedCard);
 }
@@ -264,10 +263,22 @@ function reverseRemainingCard(reversedCard) {
 function reverseAllCards() {
   const children = unreversedCards.children;
   for (let i = children.length - 1; i >= 0; i--) {
-    arrangedCards[8].push(arrangedCards[7].pop());
+    moveObjectCardBetweenPiles(children[i], unreversedCards, reversedCards);
     reverseCard(children[i], true);
     reversedCards.appendChild(children[i]);
   }
+}
+
+function moveObjectCardBetweenPiles(cardT, initialPile, targetPile) {
+  const cardObject = cardToObject(cardT);
+  const initialArray = pileToSubarray(initialPile);
+  const targetArray = pileToSubarray(targetPile);
+  const indexCardObject = initialArray.indexOf(cardObject);
+
+  if (!cardObject || !initialArray || !pileToSubarray) return undefined;
+
+  initialArray.splice(indexCardObject, 1);
+  targetArray.push(cardObject);
 }
 
 /* ----------------------- Other functions ---------------------------------------- */
