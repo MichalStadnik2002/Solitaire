@@ -121,6 +121,7 @@ function putCard(e) {
   } else {
     movingElement.style.left = 0;
     movingElement.style.top = firstTop;
+    putFewCards(movingElement, movingElement.parentNode); //remove temporary buffer div from initial pile
   }
 }
 
