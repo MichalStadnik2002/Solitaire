@@ -58,7 +58,7 @@ body
     position: relative;
 }
 
-#playboard .empty_area
+/* #playboard .empty_area
 {
     visibility: hidden;
 }
@@ -67,7 +67,7 @@ body
 {
     display:inline-flex;
     margin: 35px 0;
-}
+} */
 
 card-t
 {
