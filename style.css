@@ -32,7 +32,16 @@ body
     margin-left: auto;
     margin-right: auto;
     padding: 1.5%;
-    display: flex;
+
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    display: grid;
+    grid-template-columns: repeat(7, 7.5vw);
+    column-gap: 1vw;
+    row-gap: 7vw;
     justify-content: center;
 }
 
