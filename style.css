@@ -58,16 +58,9 @@ body
     position: relative;
 }
 
-/* #playboard .empty_area
-{
-    visibility: hidden;
+#unreversed_cards{
+    grid-column: -3/-2;
 }
-
-#final_areas, #remaining_cards, #piles_of_cards
-{
-    display:inline-flex;
-    margin: 35px 0;
-} */
 
 card-t
 {
