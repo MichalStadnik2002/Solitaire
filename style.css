@@ -16,9 +16,13 @@ body
     color: #CCC;
     font-size: 1.2em;
     word-spacing: 0.3em;
+
+    display: flex;
+    justify-content: flex-start;
 }
 
-#help, #play_again
+#help,
+#play_again
 {
     cursor: pointer;
 }
@@ -26,6 +30,7 @@ body
 #score {
     float: right;
     padding-right: 10px;
+    margin-left: auto;
 }
 
 #playboard {
