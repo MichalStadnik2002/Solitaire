@@ -6,6 +6,7 @@ const reversedCards = document.getElementById("reversed_cards");
 const unreversedCards = document.getElementById("unreversed_cards");
 const button = document.getElementById("start_button");
 const initial_page = document.getElementById("initial_page");
+const moveCounter = document.getElementById("moves")
 
 /* -------------------- Slide up Initial Page ----------------------------------- */
 
@@ -279,6 +280,13 @@ function moveObjectCardBetweenPiles(cardT, initialPile, targetPile) {
 
   initialArray.splice(indexCardObject, 1);
   targetArray.push(cardObject);
+}
+
+/* ----------------------- Counters ------------------------------------------------*/
+
+function addMove(){
+  moves ++
+  moveCounter.textContent = moves;
 }
 
 /* ----------------------- Other functions ---------------------------------------- */

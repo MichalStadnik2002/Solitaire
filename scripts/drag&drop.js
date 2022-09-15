@@ -4,6 +4,7 @@
 
 let initialPile, target, firstTop;
 let buffer = [];
+let moves = 0, score = 0;
 
 /* ----- Moving cards section ----- */
 
@@ -118,6 +119,7 @@ function putCard(e) {
     } else {
       putCardOnThePile(movingCard, initialPile, pileBellow);
     }
+    addMove();
   } else {
     movingElement.style.left = 0;
     movingElement.style.top = firstTop;
