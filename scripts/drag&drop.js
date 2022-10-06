@@ -117,10 +117,10 @@ function putCard(e) {
   if (pileBellow && isCardBellowGood(pileBellow, cardBellow, movingCard)) {
     if (movingDiv) {
       putFewCards(movingDiv, pileBellow);
-      whatAddPoints(movingCard, pileBellow, true)
+      if(initialPile!==pileBellow) whatAddPoints(movingCard, pileBellow, true);
     } else {
       putCardOnThePile(movingCard, initialPile, pileBellow);
-      whatAddPoints(movingCard, pileBellow);
+      if(initialPile!==pileBellow) whatAddPoints(movingCard, pileBellow);
     }
     addMove();
   } else {
@@ -156,14 +156,13 @@ function putCardOnThePile(card, initialPile, targetPile) {
 }
 
 function putFewCards(divWithCards, targetPile) {
-  if (targetPile.classList[0] === "pile") {
+  if (targetPile.classList[0] === "pile") { // TODO here should be classList.contains()
     let children = Array.from(divWithCards.children);
     while (children.length) {
-      putCardOnThePile(children.shift(), divWithCards, targetPile);
-      // debugger
-      addPoints('move few cards')
+      const currentCard = children.shift()
+      putCardOnThePile(currentCard, divWithCards, targetPile);
+      if(initialPile!==targetPile && currentCard.rank!=='13') addPoints('move few cards')
     }
-    console.log("usuwam");
     divWithCards.remove();
     if (initialPile.childNodes.length && !Number(initialPile.lastChild.rank)) {
       reverseCard(initialPile.lastChild, false);
