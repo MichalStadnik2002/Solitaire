@@ -7,6 +7,7 @@ const unreversedCards = document.getElementById("unreversed_cards");
 const button = document.getElementById("start_button");
 const initial_page = document.getElementById("initial_page");
 const moveCounter = document.getElementById("moves")
+const pointsCounter = document.getElementById("points")
 
 /* -------------------- Slide up Initial Page ----------------------------------- */
 
@@ -287,6 +288,41 @@ function moveObjectCardBetweenPiles(cardT, initialPile, targetPile) {
 function addMove(){
   moves ++
   moveCounter.textContent = moves;
+}
+
+function addPoints(event){
+  switch (event) {
+    case 'move':
+      points++
+      break;
+    case 'reverse card':
+      points += 2
+      break;
+    case 'move few cards':
+    case 'card on final area':
+      points += 10
+      break;
+    case 'ace on final area':
+      points += 50
+      break;
+    case 'king on empty pile':
+      points += 15
+      break;
+    default:
+      break;
+  }
+  pointsCounter.textContent = points
+}
+
+function whatAddPoints(card, targetPile, areFewCards=false){
+  if(targetPile.classList.contains('final_area')){
+    card.rank>1 ? addPoints('card on final area') : addPoints('ace on final area')
+  } else if (card.rank === '13' && targetPile.classList.contains('pile'))
+  {
+   addPoints('king on empty pile'); 
+  }
+  else  if(!areFewCards) addPoints('move');
+  else return;
 }
 
 /* ----------------------- Other functions ---------------------------------------- */

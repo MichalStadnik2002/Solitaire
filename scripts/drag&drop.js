@@ -4,7 +4,7 @@
 
 let initialPile, target, firstTop;
 let buffer = [];
-let moves = 0, score = 0;
+let moves = 0, points = 0;
 
 /* ----- Moving cards section ----- */
 
@@ -22,6 +22,7 @@ function pickUpCard(e) {
   try {
     if (target.parentNode.id == "reversed_cards") {
       reverseRemainingCard(target);
+      addPoints('reverse card')
     } else if (e.target.id == "reversed_cards") {
       reverseAllCards();
     } else if (target.tagName == "CARD-T" && target.rank != 0) {
@@ -116,8 +117,10 @@ function putCard(e) {
   if (pileBellow && isCardBellowGood(pileBellow, cardBellow, movingCard)) {
     if (movingDiv) {
       putFewCards(movingDiv, pileBellow);
+      whatAddPoints(movingCard, pileBellow, true)
     } else {
       putCardOnThePile(movingCard, initialPile, pileBellow);
+      whatAddPoints(movingCard, pileBellow);
     }
     addMove();
   } else {
@@ -157,6 +160,8 @@ function putFewCards(divWithCards, targetPile) {
     let children = Array.from(divWithCards.children);
     while (children.length) {
       putCardOnThePile(children.shift(), divWithCards, targetPile);
+      // debugger
+      addPoints('move few cards')
     }
     console.log("usuwam");
     divWithCards.remove();
